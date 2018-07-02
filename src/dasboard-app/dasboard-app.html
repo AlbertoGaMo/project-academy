@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../user-list/user-list.html">
+
+<dom-module id="dashboard-app">
+    <template>
+        <style>
+        </style>
+        <h1>I am the dasboard</h1>
+
+        <user-list users="[[users]]"></user-list>
+
+    </template>
+    <script>
+        (function dashboardApp(customElements) {
+            class DashboardApp extends Polymer.Element {
+                static get is() {
+                    return 'dashboard-app'
+                }
+
+                static get properties() {
+                    return {
+                        users: {
+                            value: [{
+                                    name: 'Osvaldo'
+                                },
+                                {
+                                    name: 'Raul'
+                                },
+                                {
+                                    name: 'Ramon'
+                                },
+                                {
+                                    name: 'Monica'
+                                },
+                            ]
+                        }
+
+                    }
+                }
+
+
+            }
+            customElements.define(DashboardApp.is, DashboardApp);
+
+        })(window.customElements);
+    </script>
+</dom-module>

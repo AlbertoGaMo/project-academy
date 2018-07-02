@@ -5,14 +5,25 @@
 <dom-module id="user-list">
     <template>
         <style>
+            .user-list {
+                display: flex;
+                flex-direction: column;
+                outline: 3px solid red;
+                width: 20%;
+                margin: 2rem;
+            }
+
+            paper-card {
+                margin: 10px;
+                padding: 12px;
+            }
         </style>
 
-        <div>
+        <div class="user-list">
             <template is="dom-repeat" items="{{users}}">
                 <paper-card>
                     <h1>[[item.name]]</h1>
                 </paper-card>
-
             </template>
         </div>
 
@@ -26,22 +37,7 @@
 
                 static get properties() {
                     return {
-                        users: {
-                            value: [{
-                                    name: 'Osvaldo'
-                                },
-                                {
-                                    name: 'Raul'
-                                },
-                                {
-                                    name: 'Ramon'
-                                },
-                                {
-                                    name: 'Monica'
-                                },
-                            ]
-                        }
-
+                        users: Array
                     }
                 }
 
