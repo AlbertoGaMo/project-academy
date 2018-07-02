@@ -1,14 +1,137 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 
 <dom-module id="login-app">
     <template>
         <style>
             :host {
+                height: 100%;
+                overflow: hidden;
+                user-select: none;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                -ms-flex-direction: column;
+                -webkit-flex-direction: column;
+                flex-direction: column;
+                -ms-flex-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+                -ms-flex-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+
+            paper-card {
+                margin: auto;
+                padding: 30px;
+                border: 1px solid rgba(0,0,0,0.2);
+                /*Mixin applied to the card header section*/
+                --paper-card-header: {
+                    padding: 5px;
+                    margin: 10px;
+                };
+            }
+
+            .card-actions div div{
+                display: flex;
+                padding: 0.7em 0.57em;
+                justify-content: center;
+                position: relative;
+                cursor: pointer;
+            }
+
+            paper-button {
+                width: 100%;
+                margin: 0;
+                background-color: var(--paper-indigo-500);
+                color: white;
+                font-weight: 500 !important;
+                --paper-button-raised-keyboard-focus: {
+                    color: white !important;
+                    font-weight: 500 !important;
+                };
+            }
+
+            paper-spinner{
+                justify-content: center;
+                align-items: center;
+                margin: auto;
                 display: block;
             }
+
+            /* media responsive */
+            @media  (max-width:600px){
+                :host paper-card {
+                    width:90%;
+                }
+            }
+
+            @media (min-width: 500px) and (max-width: 1024px) , handheld and (orientation: landscape)   {
+                :host paper-card {
+                    width: 95%;
+                    padding: 40px;
+                    margin: 5px;
+                    --paper-card-header: {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        left: 0;
+                        width: 200px;
+                        margin: auto;
+                        padding: 10px;
+                    };
+                }
+            }
         </style>
-        <h2>Hello [[prop1]]!</h2>
+
+        <paper-card elevation="1" animated animatedShadow fadeImage image="../../images/logo.png" alt="logo">
+
+            <div class="card-content">
+
+                <paper-input id="userMail" value="{{user.id::input}}" label="Usuario" placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
+
+                    <iron-icon icon="mail" slot="prefix"></iron-icon>
+                    <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear" title="clear" ></paper-icon-button>
+
+                </paper-input>
+
+                <paper-input type="password" value="{{user.pwd::input}}" label="Contraseña" required error-message="Campo contraseña no debe ir vacio." ></paper-input>
+
+            </div>
+
+            <div class="card-actions" style="border-top: none;">
+
+                <div>
+
+                    <template is="dom-if" if="[[!loading]]">
+                        <paper-button  on-click="_onClickDoLogin">Iniciar sesión</paper-button>
+                    </template>
+
+                    <template is="dom-if" if="[[loading]]">
+                        <paper-spinner active ></paper-spinner>
+                    </template>
+
+                </div>
+            </div>
+        </paper-card>
+
+        <paper-input-container>
+            <input pattern="[0-9]*">
+            <paper-input-error slot="add-on">Only numbers are allowed!</paper-input-error>
+        </paper-input-container>
+
     </template>
 
     <script>
@@ -20,9 +143,23 @@
             static get is() { return 'login-app'; }
             static get properties() {
                 return {
-                    prop1: {
-                        type: String,
-                        value: 'login-app'
+                    loading: {
+                        type: Boolean,
+                        value: false
+                    },
+                    user: {
+                        type: Object,
+                        value: {
+                            mail: '',
+                            pwd: ''
+                        }
+                    },
+                    error:{
+                        type: Object,
+                        value: {
+                            mail:'',
+                            pwd:''
+                        }
                     }
                 };
             }
@@ -57,10 +194,53 @@
                  * El trabajo típico que no es crítica, puede incluir la adición de detectores de eventos UI y atributos aria.
                  */
 
-                afterNextRender(this, ()=> {
-                    this.parentElement.querySelector('.spinner').remove();
+                Polymer.RenderStatus.afterNextRender(this, () => {
+                    this.parentElement.firstElementChild.remove();
                     this.removeAttribute('unresolved');
                 });
+            }
+            /**
+             *
+             * @private
+             */
+            _checkMail(e){
+                let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(e);
+            }
+            /**
+             *
+             * @private
+             */
+            _clearInput(){
+                this.shadowRoot.querySelector('#userMail').value = '';
+            }
+            /**
+             *
+             * @private
+             */
+            _emptyInputs(inputs) {
+
+                let empty = false;
+
+                inputs.forEach((input)=> {
+
+                    if(!input.validate()){
+                        input.setAttribute('auto-validate','');
+                        empty = true;
+                    }
+
+                });
+
+                return empty;
+            }
+            _onClickDoLogin(){
+
+                if(this._emptyInputs(this.shadowRoot.querySelectorAll('paper-input'))){return; }
+                this.loading = !this.loading;
+                //this._fetch();
+            }
+            _fetc(){
+                console.log("aqui en le fetch");
             }
         }
 
