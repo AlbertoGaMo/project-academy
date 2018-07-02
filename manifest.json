@@ -1,0 +1,6 @@
+{
+  "name": "project-academy",
+  "short_name": "project-academy",
+  "start_url": "/",
+  "display": "standalone"
+}

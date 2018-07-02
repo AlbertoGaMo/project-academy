@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
+
+<dom-module id="login-app">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <h2>Hello [[prop1]]!</h2>
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class LoginApp extends Polymer.Element {
+            static get is() { return 'login-app'; }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'login-app'
+                    }
+                };
+            }
+
+            //  === Callbacks ===>
+
+            /**
+             * Ciclos de vida (Callbacks)
+             *
+             * @descriptor
+             *
+             * La especificación de elemento personalizado proporciona un conjunto de devoluciones de llamada
+             * llamadas "custom element reactions" que le permiten ejecutar código de usuario en respuesta a ciertos
+             * cambios de ciclo de vida.
+             *
+             */
+
+            /** @ready
+             * Invocada la primera vez que el elemento se agrega al DOM.
+             */
+            ready() {
+                // Llamada al método de la superclase "ready()". Esto es necesario para que Polymer pueda engancharse en el ciclo de vida del elemento.
+                super.ready();
+                /**
+                 * @afterNextRender Encola una devolución de llamada que se ejecutará después de la siguiente representación,
+                 * equivalente a una tarea (setTimeout) después de la siguiente requestAnimationFrame.
+                 *
+                 * @description
+                 *
+                 * Este método es útil para ajustar el rendimiento del primer render de un elemento o aplicación al diferir
+                 * el trabajo no crítico hasta después de la primera pintura.
+                 * El trabajo típico que no es crítica, puede incluir la adición de detectores de eventos UI y atributos aria.
+                 */
+
+                afterNextRender(this, ()=> {
+                    this.parentElement.querySelector('.spinner').remove();
+                    this.removeAttribute('unresolved');
+                });
+            }
+        }
+
+        window.customElements.define(LoginApp.is, LoginApp);
+    </script>
+</dom-module>
