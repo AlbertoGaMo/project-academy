@@ -1,0 +1,54 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="user-list">
+    <template>
+        <style>
+        </style>
+
+        <div>
+            <template is="dom-repeat" items="{{users}}">
+                <paper-card>
+                    <h1>[[item.name]]</h1>
+                </paper-card>
+
+            </template>
+        </div>
+
+    </template>
+    <script>
+        (function userList(customElements) {
+            class UserList extends Polymer.Element {
+                static get is() {
+                    return 'user-list'
+                }
+
+                static get properties() {
+                    return {
+                        users: {
+                            value: [{
+                                    name: 'Osvaldo'
+                                },
+                                {
+                                    name: 'Raul'
+                                },
+                                {
+                                    name: 'Ramon'
+                                },
+                                {
+                                    name: 'Monica'
+                                },
+                            ]
+                        }
+
+                    }
+                }
+
+
+            }
+            customElements.define(UserList.is, UserList);
+
+        })(window.customElements);
+    </script>
+</dom-module>
