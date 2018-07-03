@@ -1,9 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
-
-<link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
-
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
@@ -37,6 +34,7 @@
                 margin: auto;
                 padding: 30px;
                 border: 1px solid rgba(0,0,0,0.2);
+                background: url(../../images/sesion-bg.png) no-repeat center center;
                 /*Mixin applied to the card header section*/
                 --paper-card-header: {
                     padding: 5px;
@@ -50,6 +48,24 @@
                 justify-content: center;
                 position: relative;
                 cursor: pointer;
+            }
+            paper-input{
+                --paper-input-container-label: {
+                    color: white;
+                    padding: 2px;
+                    font-weight: bold;
+                };
+                --paper-input-container-label-floating: {
+                    width: auto;
+                    color: white;
+                    padding: 2px;
+                    font-weight: bold;
+                };
+                --paper-input-container-input-focus: {
+                    background: rgba(0, 0, 0, 0.1);
+                    color: white;
+                };
+                --paper-input-container-focus-color: white;
             }
 
             paper-button {
@@ -100,14 +116,14 @@
 
             <div class="card-content">
 
-                <paper-input id="userMail" value="{{user.id::input}}" label="Usuario" placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
+                <paper-input id="userMail" value="{{mail::input}}" label="Usuario" placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
 
                     <iron-icon icon="mail" slot="prefix"></iron-icon>
                     <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear" title="clear" ></paper-icon-button>
 
                 </paper-input>
 
-                <paper-input type="password" value="{{user.pwd::input}}" label="Contraseña" required error-message="Campo contraseña no debe ir vacio." ></paper-input>
+                <paper-input id="userPwd" type="password" value="{{pwd::input}}" label="Contraseña" required error-message="Campo contraseña no debe ir vacio." ></paper-input>
 
             </div>
 
@@ -127,11 +143,6 @@
             </div>
         </paper-card>
 
-        <paper-input-container>
-            <input pattern="[0-9]*">
-            <paper-input-error slot="add-on">Only numbers are allowed!</paper-input-error>
-        </paper-input-container>
-
     </template>
 
     <script>
@@ -149,10 +160,19 @@
                     },
                     user: {
                         type: Object,
+                        notify: true,
                         value: {
                             mail: '',
                             pwd: ''
                         }
+                    },
+                    mail: {
+                      type: String,
+                      value: ''
+                    },
+                    pwd: {
+                        type: String,
+                        value: ''
                     },
                     error:{
                         type: Object,
@@ -212,7 +232,7 @@
              * @private
              */
             _clearInput(){
-                this.shadowRoot.querySelector('#userMail').value = '';
+                this.mail = '';
             }
             /**
              *
@@ -235,12 +255,45 @@
             }
             _onClickDoLogin(){
 
+                console.log('mail',this.user.mail);
+
                 if(this._emptyInputs(this.shadowRoot.querySelectorAll('paper-input'))){return; }
+                if(!this._checkMail(this.user.mail)){
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message','Formato de correo no válido.');
+                    this.shadowRoot.querySelector('#userMail').invalid = true;
+                    return;
+                }else{
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message','Campo email no debe ir vacio.');
+                    this.shadowRoot.querySelector('#userMail').invalid = false;
+                }
                 this.loading = !this.loading;
-                //this._fetch();
+                this._fetch();
             }
-            _fetc(){
-                console.log("aqui en le fetch");
+            _fetch(){
+
+                this.set('user',{
+                    mail: this.mail,
+                    pwd: this.pwd,
+                });
+
+                fetch('falta_url_anuar',{ // Url
+                    method: 'post', // Solicitud de tipo "POST"
+                    body: JSON.stringify({user:this.user})
+                })
+                    .then(r => {
+                        console.log('r',r);
+                        if (!r.ok) { throw r;}
+                        if (r.status !== 200) { throw r;}
+
+
+                    })
+                    .catch(e => {
+                        console.log(`Parece que hubo un problema ===>\n Código de estado: ${e.status}\n Mensaje: ${e.statusText}`);
+                        this.loading = !this.loading;
+                        this.mail = '';
+                        this.pwd = '';
+                    });
+
             }
         }
 
