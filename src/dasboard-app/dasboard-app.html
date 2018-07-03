@@ -6,13 +6,38 @@
 <dom-module id="dashboard-app">
     <template>
         <style>
+            .container {
+                display: flex;
+                outline: 3px solid red;
+            }
+
+            user-list {
+                background-color: aqua;
+                flex-grow: 1;
+
+            }
+
+            .cont {
+                flex-grow: 4;
+            }
+
+            @media (max-width: 425px) {
+                .container {
+                    flex-direction: column;
+                }
+            }
         </style>
         <h1>I am the dasboard</h1>
+        <div class="container">
+            <user-list users="[[users]]"></user-list>
 
-        <user-list users="[[users]]"></user-list>
+            <div class="cont">
+                <post-form></post-form>
+                <post-list></post-list>
+            </div>
+        </div>
 
-        <post-form></post-form>
-        <post-list></post-list>
+
 
 
     </template>

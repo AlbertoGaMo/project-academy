@@ -7,19 +7,50 @@
 <dom-module id="post-form">
     <template>
         <style>
-        </style>
+            .form-container {
+                width: 50%;
+            }
 
-        <div>
-            <iron-form id="iron">
-                <form method="get" action="/form/handler">
-                    <paper-input invalid="{{validTitle}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
-                        label="Title"></paper-input>
-                    <paper-textarea invalid="{{validPost}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
-                        label="Post"></paper-textarea>
-                    <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
-                </form>
-            </iron-form>
+            .pyramid-card {
+                outline: 3px solid salmon;
+                width: 600px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: white;
+            }
+
+            #pyramid-icon {
+                height: 100px;
+            }
+
+            paper-input {
+                width: 70%;
+            }
+
+            paper-textarea {
+                width: 90%;
+            }
+
+            paper-button {
+                margin-top: 16px;
+            }
+        </style>
+        <div class="pyramid-card">
+            <img id="pyramid-icon" src="../../images/piramide-maya.svg" alt="pyramid">
+            <paper-input invalid="{{validTitle}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+                label="Title"></paper-input>
+
+            <paper-textarea invalid="{{validPost}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+                label="Post"></paper-textarea>
+
+
+            <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
+
+
         </div>
+
+
 
     </template>
     <script>
