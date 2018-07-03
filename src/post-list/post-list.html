@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../post-card/post-card.html">
 
 <dom-module id="post-list">
     <template>
@@ -6,6 +8,9 @@
         </style>
 
         <div class="post-list">
+            <template is="dom-repeat" items="{{postArr}}">
+                <post-card post="[[item]]"></post-card>
+            </template>
 
         </div>
 
@@ -19,7 +24,17 @@
 
                 static get properties() {
                     return {
-                        users: Array
+                        postArr: {
+                            value: [{
+                                    title: 'Osvaldo',
+                                    content: 'While messages are typically processed by computer algorithms, the newspaper spoke to several companies where employees had read "thousands" of email messages.'
+                                },
+                                {
+                                    title: 'Gmail messages \'read by human third parties\'',
+                                    content: ' While messages are typically processed by computer al While messages are typically processed by computer alWhile messages are typically processed by computer algorithms, the newspaper spoke to several companies where employees had read "thousands" of email messages.'
+                                }
+                            ]
+                        }
                     }
                 }
 
