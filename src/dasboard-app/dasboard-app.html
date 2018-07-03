@@ -2,6 +2,7 @@
 <link rel="import" href="../user-list/user-list.html">
 <link rel="import" href="../post-form/post-form.html">
 <link rel="import" href="../post-list/post-list.html">
+<link rel="import" href="../nav-bar/nav-bar.html">
 
 <dom-module id="dashboard-app">
     <template>
@@ -27,7 +28,7 @@
                 }
             }
         </style>
-        <h1>I am the dasboard</h1>
+        <nav-bar></nav-bar>
         <div class="container">
             <user-list users="[[users]]"></user-list>
 

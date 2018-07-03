@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/iron-icon/index.html">
+<link rel="import" href="/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+
+<dom-module id="nav-bar">
+    <template>
+        <style>
+            .dropbtn {
+                background-color: #3498DB;
+                color: white;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .dropbtn:hover,
+            .dropbtn:focus {
+                background-color: #2980B9;
+            }
+
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                overflow: auto;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .dropdown a:hover {
+                background-color: #ddd;
+            }
+
+            .show {
+                display: block;
+            }
+        </style>
+        <div class="dropdown">
+            <button on-click="handdleClick" class="dropbtn">Dropdown</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#home">Logout</a>
+            </div>
+        </div>
+
+    </template>
+    <script>
+        (function navBar(customElements) {
+            class NavBar extends Polymer.Element {
+
+                static get is() {
+                    return 'nav-bar'
+                }
+
+                static get properties() {
+                    return {
+                        users: Array
+                    }
+                }
+
+                handdleClick() {
+                    this.shadowRoot.getElementById("myDropdown").classList.toggle("show");
+
+                }
+
+
+
+            }
+            customElements.define(NavBar.is, NavBar);
+
+        })(window.customElements);
+    </script>
+</dom-module>
