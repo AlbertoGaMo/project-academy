@@ -1,5 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
@@ -7,10 +11,11 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../src/color/color-design.html">
 
 <dom-module id="login-app">
     <template>
-        <style>
+        <style include="color-design">
             :host {
                 height: 100%;
                 overflow: hidden;
@@ -30,48 +35,74 @@
                 box-sizing: border-box;
             }
 
-            paper-card {
-                margin: auto;
-                padding: 30px;
-                border: 1px solid rgba(0,0,0,0.2);
-                background: url(../../images/sesion-bg.png) no-repeat center center;
-                /*Mixin applied to the card header section*/
-                --paper-card-header: {
-                    padding: 5px;
-                    margin: 10px;
+            .paper-card{
+                --paper-card-background-color: var(--card-background-color);
+                --paper-card:{
+                    margin: auto;
+                    padding: 30px;
+                    border: 1px solid rgba(0,0,0,0.2);
                 };
+                --paper-card-header: {
+                    padding: 20px;
+                    margin: 10px 110px;
+                };
+                --paper-card-actions:{
+                    border: none;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    -ms-flex-pack: center;
+                    -webkit-justify-content: center;
+                    justify-content: center;
+                }
             }
 
-            .card-actions div div{
-                display: flex;
-                padding: 0.7em 0.57em;
-                justify-content: center;
-                position: relative;
-                cursor: pointer;
-            }
-            paper-input{
+            .paper__input{
+                margin-bottom: 30px;
+                --primary-text-color: var(--text-primary-color);
+                /*placeholder*/
+                --paper-input-container-color: var(--input-placeholder-color);
+                --paper-input-container-focus-color: var(--primary-text-color);
+                --paper-input-container-invalid-color: red;
+                border: var(--input-container-border);
+                border-radius: 5px;
+
+                /* Reset some defaults */
+                --paper-input-container: { padding: 0;};
+                --paper-input-container-underline: { display: none; height: 0;};
+                /*--paper-input-container-underline-focus: { display: none; };*/
+
+                /* New custom styles */
+                --paper-input-container-input: {
+                    box-sizing: border-box;
+                    font-size: inherit;
+                    padding: 4px;
+                    background: var(--primary-background-color);
+                };
+                --paper-input-container-input-focus: {
+                    /*background: var(--primary-background-color);*/
+                };
+                --paper-input-container-input-invalid: {
+                    background: rgba(255, 0, 0, 0.3);
+                };
                 --paper-input-container-label: {
-                    color: white;
+                    top: -10px;
+                    left: 5px;
+                    background: transparent;
                     padding: 2px;
                     font-weight: bold;
+                    font-size: 18pt;
+                    color: var(--primary-text-color);
                 };
                 --paper-input-container-label-floating: {
                     width: auto;
-                    color: white;
-                    padding: 2px;
-                    font-weight: bold;
                 };
-                --paper-input-container-input-focus: {
-                    background: rgba(0, 0, 0, 0.1);
-                    color: white;
-                };
-                --paper-input-container-focus-color: white;
             }
 
-            paper-button {
+            .paper__button {
                 width: 100%;
                 margin: 0;
-                background-color: var(--paper-indigo-500);
+                background-color: var(--default-primary-color);
                 color: white;
                 font-weight: 500 !important;
                 --paper-button-raised-keyboard-focus: {
@@ -80,68 +111,55 @@
                 };
             }
 
-            paper-spinner{
-                justify-content: center;
-                align-items: center;
-                margin: auto;
-                display: block;
-            }
-
-            /* media responsive */
-            @media  (max-width:600px){
-                :host paper-card {
-                    width:90%;
-                }
-            }
-
-            @media (min-width: 500px) and (max-width: 1024px) , handheld and (orientation: landscape)   {
-                :host paper-card {
-                    width: 95%;
-                    padding: 40px;
-                    margin: 5px;
-                    --paper-card-header: {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        left: 0;
-                        width: 200px;
-                        margin: auto;
-                        padding: 10px;
-                    };
-                }
-            }
         </style>
 
-        <paper-card elevation="1" animated animatedShadow fadeImage image="../../images/logo.png" alt="logo">
+        <app-location route="{{route}}"></app-location>
+        <app-route
+                route="{{route}}"
+                pattern="/:page"
+                data="{{routeData}}"
+                tail="{{subroute}}">
+        </app-route>
 
-            <div class="card-content">
 
-                <paper-input id="userMail" value="{{mail::input}}" label="Usuario" placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
+            <paper-card class="paper-card" elevation="5" animatedShadow fadeImage image="../../images/logo.png" alt="logo">
 
-                    <iron-icon icon="mail" slot="prefix"></iron-icon>
-                    <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear" title="clear" ></paper-icon-button>
+                <div class="card-content">
 
-                </paper-input>
+                    <paper-input id="userMail" class="paper__input" value="{{mail::input}}" label="Usuario" placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
 
-                <paper-input id="userPwd" type="password" value="{{pwd::input}}" label="Contraseña" required error-message="Campo contraseña no debe ir vacio." ></paper-input>
+                        <iron-icon icon="mail" slot="prefix"></iron-icon>
+                        <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear" title="clear" ></paper-icon-button>
 
-            </div>
+                    </paper-input>
 
-            <div class="card-actions" style="border-top: none;">
-
-                <div>
-
-                    <template is="dom-if" if="[[!loading]]">
-                        <paper-button  on-click="_onClickDoLogin">Iniciar sesión</paper-button>
-                    </template>
-
-                    <template is="dom-if" if="[[loading]]">
-                        <paper-spinner active ></paper-spinner>
-                    </template>
+                    <paper-input id="userPwd" class="paper__input" type="password" value="{{pwd::input}}" always-float-label label="Contraseña" required error-message="Campo contraseña no debe ir vacio." ></paper-input>
 
                 </div>
-            </div>
-        </paper-card>
+
+                <div class="card-actions">
+
+                    <div>
+
+                        <template is="dom-if" if="[[!loading]]">
+                            <paper-button  class="paper__button" on-click="_onClickDoLogin">Iniciar sesión</paper-button>
+                        </template>
+
+                        <template is="dom-if" if="[[loading]]">
+                            <paper-spinner active ></paper-spinner>
+                        </template>
+
+                    </div>
+                </div>
+            </paper-card>
+
+        <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
+            <dashboard-base name="dashboard" route="{{route}}"></dashboard-base>
+        </iron-pages>
+
+
+
+
 
     </template>
 
@@ -154,6 +172,13 @@
             static get is() { return 'login-app'; }
             static get properties() {
                 return {
+                    page: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged',
+                    },
+                    routeData: Object,
+                    subroute: Object,
                     loading: {
                         type: Boolean,
                         value: false
@@ -182,6 +207,11 @@
                         }
                     }
                 };
+            }
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)'
+                ]
             }
 
             //  === Callbacks ===>
@@ -219,6 +249,28 @@
                     this.removeAttribute('unresolved');
                 });
             }
+            _routePageChanged(page) {
+                this.page = page || 'login';
+            }
+            _pageChanged(page,oldPage) {
+
+                console.log("page",page,oldPage);
+
+                if (page != null) {
+                    // home route is eagerly loaded
+                    if (page !== 'login') {
+                        //Polymer.importHref(href, onload, onerror, optAsync){}
+                        /*Polymer.importHref(
+                            this.resolveUrl('../views/view-' + page + '.html'),
+                            ()=> {
+                                if(page==="detail"){
+                                    const page_detail = this.$.viewDetailPage;
+                                    page_detail._setDetail();
+                                }
+                            }, null, true);*/
+                    }
+                }
+            }
             /**
              *
              * @private
@@ -255,10 +307,8 @@
             }
             _onClickDoLogin(){
 
-                console.log('mail',this.user.mail);
-
                 if(this._emptyInputs(this.shadowRoot.querySelectorAll('paper-input'))){return; }
-                if(!this._checkMail(this.user.mail)){
+                if(!this._checkMail(this.mail)){
                     this.shadowRoot.querySelector('#userMail').setAttribute('error-message','Formato de correo no válido.');
                     this.shadowRoot.querySelector('#userMail').invalid = true;
                     return;
@@ -275,7 +325,7 @@
                     mail: this.mail,
                     pwd: this.pwd,
                 });
-
+/*
                 fetch('falta_url_anuar',{ // Url
                     method: 'post', // Solicitud de tipo "POST"
                     body: JSON.stringify({user:this.user})
@@ -292,7 +342,9 @@
                         this.loading = !this.loading;
                         this.mail = '';
                         this.pwd = '';
-                    });
+                    });*/
+
+                document.location = '../../src/dashboard/dashboard-base.html';
 
             }
         }
