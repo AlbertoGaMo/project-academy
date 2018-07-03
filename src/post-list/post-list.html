@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="post-list">
+    <template>
+        <style>
+        </style>
+
+        <div class="post-list">
+
+        </div>
+
+    </template>
+    <script>
+        (function postList(customElements) {
+            class PostList extends Polymer.Element {
+                static get is() {
+                    return 'post-list'
+                }
+
+                static get properties() {
+                    return {
+                        users: Array
+                    }
+                }
+
+            }
+            customElements.define(PostList.is, PostList);
+
+        })(window.customElements);
+    </script>
+</dom-module>
