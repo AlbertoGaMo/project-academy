@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="post-form">
+    <template>
+        <style>
+        </style>
+
+        <div>
+            <iron-form id="iron">
+                <form method="get" action="/form/handler">
+                    <paper-input invalid="{{validTitle}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+                        label="Title"></paper-input>
+                    <paper-textarea invalid="{{validPost}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+                        label="Post"></paper-textarea>
+                    <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
+                </form>
+            </iron-form>
+        </div>
+        <paper-button disabled="[[disableBtn]]" class="disabled">disabled</paper-button>
+
+    </template>
+    <script>
+        (function postForm(customElements) {
+            class PostForm extends Polymer.Element {
+                static get is() {
+                    return 'post-form'
+                }
+
+                static get properties() {
+                    return {
+                        users: Array,
+                        validTitle: Boolean,
+                        validPost: Boolean,
+                        disableBtn: {
+                            computed: 'isFormValid(validTitle, validPost)'
+                        }
+                    }
+                }
+
+                submitForm() {
+                    this.$.iron.submit();
+                }
+
+                isFormValid(title, post) {
+                    if (title && post) {
+                        return true
+                    }
+                    return false
+                }
+
+
+
+            }
+            customElements.define(PostForm.is, PostForm);
+
+        })(window.customElements);
+    </script>
+</dom-module>
