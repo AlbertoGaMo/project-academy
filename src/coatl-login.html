@@ -307,15 +307,16 @@
                             if(this.mail === email && this.pwd === pwd){
                                 console.log("coincide sesión");
                                //aqui hay que redirigir al dashboard
-                            }else{
-                                console.log("no coincide sesión");
+                                document.location = '/dashboard';
+                                break;
                             }
-
                         }
 
                         this.loading = !this.loading;
                         this.mail = '';
                         this.pwd = '';
+
+
 
                     })
                     .catch(e => {
@@ -324,8 +325,6 @@
                         this.mail = '';
                         this.pwd = '';
                     });
-
-                //document.location = '../../src/dashboard/dashboard-base.html';
 
             }
         }
