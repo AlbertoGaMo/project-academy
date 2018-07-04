@@ -31,6 +31,7 @@
         </style>
         <iron-ajax auto url="https://posts-services.herokuapp.com/users" handle-as="json" last-response="{{response}}"></iron-ajax>
         <nav-bar></nav-bar>
+        <h1>[[currentUser]]</h1>
         <div class="container">
             <user-list users="[[usersWithoutMe]]"></user-list>
 
@@ -55,7 +56,8 @@
                         usersList: {
                             computed: '_filterUsers(response)'
                         },
-                        usersWithoutMe: Array
+                        usersWithoutMe: Array,
+                        currentUser: String
                     }
                 }
 
@@ -71,6 +73,7 @@
 
                     }
                     this.usersWithoutMe = arr;
+                    this.currentUser = arr[0].name;
                     console.log(arr)
                 }
 

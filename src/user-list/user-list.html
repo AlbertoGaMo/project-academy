@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
 
 <dom-module id="user-list">
     <template>
@@ -23,6 +24,7 @@
             <template is="dom-repeat" items="{{users}}">
                 <paper-card>
                     <h1>[[item.name]]</h1>
+                    <paper-ripple></paper-ripple>
                 </paper-card>
             </template>
         </div>
