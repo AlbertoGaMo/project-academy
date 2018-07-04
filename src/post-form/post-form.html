@@ -38,11 +38,11 @@
         </style>
         <div class="pyramid-card">
             <img id="pyramid-icon" src="../../images/piramide-maya.svg" alt="pyramid">
-            <paper-input value={{titleInputVal}} invalid="{{validTitle}}" pattern=".{1,10}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+            <paper-input value={{titleInputVal}} invalid="{{ivalidTitle}}" pattern=".{1,10}" required auto-validate error-message="This field must be between 1 and 140 characters long"
                 label="Title"></paper-input>
 
-            <paper-textarea rows$="[[rows]]" value={{textAreaValue}} invalid="{{validPost}}" maxlength="13" required auto-validate error-message="This field must be between 1 and 140 characters long"
-                label="Post"></paper-textarea>
+            <paper-textarea rows$="[[rows]]" value={{textAreaValue}} invalid="{{invalidPost}}" maxlength="13" required auto-validate
+                error-message="This field must be between 1 and 140 characters long" label="Post"></paper-textarea>
 
 
             <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
@@ -63,12 +63,12 @@
                 static get properties() {
                     return {
                         users: Array,
-                        validTitle: Boolean,
-                        validPost: Boolean,
+                        ivalidTitle: Boolean,
+                        invalidPost: Boolean,
                         titleInputVal: String,
                         textAreaValue: String,
                         disableBtn: {
-                            computed: 'isFormValid(validTitle, validPost, titleInputVal, textAreaValue)'
+                            computed: 'isFormValid(ivalidTitle, invalidPost, titleInputVal, textAreaValue)'
                         },
                         rows: {
                             value: 2
@@ -80,11 +80,11 @@
                     this.$.iron.submit();
                 }
 
-                isFormValid(title, post, titleInputVal, textAreaValue) {
+                isFormValid(invalidTitle, invalidPost, titleInputVal, textAreaValue) {
                     if (!titleInputVal || !textAreaValue) {
                         return true
                     }
-                    if (title && post) {
+                    if (invalidTitle || invalidPost) {
                         return true
                     }
                     return false
