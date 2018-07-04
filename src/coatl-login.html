@@ -172,14 +172,6 @@
                         type: Boolean,
                         value: false
                     },
-                    user: {
-                        type: Object,
-                        notify: true,
-                        value: {
-                            mail: '',
-                            pwd: ''
-                        }
-                    },
                     mail: {
                         type: String,
                         value: ''
@@ -290,12 +282,12 @@
 
             _fetch() {
 
-                this.set('user', {
-                    mail: this.mail,
-                    pwd: this.pwd,
-                });
+                console.log('JSON.stringify({email:this.mail,password: this.pwd})',JSON.stringify({email:this.mail,password: this.pwd}));
 
-                fetch('https://posts-services.herokuapp.com/users')
+                fetch('https://posts-services.herokuapp.com/users'/*,{
+                    method: 'post',
+                    body: JSON.stringify({email:this.mail,password: this.pwd})
+                }*/)
                     .then((resp) => resp.json()) // Transform the data into json
                     .then((data)=>  {
                         // Create and append the li's to the ul
