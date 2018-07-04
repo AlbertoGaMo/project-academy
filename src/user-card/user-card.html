@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-card/index.html">
+<link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
+
+<dom-module id="user-card">
+    <template>
+        <style>
+        </style>
+
+        <div on-click="_handleClick">
+            <paper-card>
+                <h1>[[user.name]]</h1>
+                <paper-ripple></paper-ripple>
+            </paper-card>
+        </div>
+
+    </template>
+    <script>
+        (function userCard(customElements) {
+            class UserCard extends Polymer.Element {
+                static get is() {
+                    return 'user-card'
+                }
+
+                static get properties() {
+                    return {
+                        user: Object
+                    }
+                }
+
+                _handleClick() {
+                    this.dispatchEvent(new CustomEvent('user-card-click', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {
+                            userName: this.user.name
+                        }
+                    }));
+                }
+
+            }
+            customElements.define(UserCard.is, UserCard);
+
+        })(window.customElements);
+    </script>
+</dom-module>

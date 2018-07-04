@@ -45,6 +45,12 @@
     <script>
         (function dashboardApp(customElements) {
             class DashboardApp extends Polymer.Element {
+
+                ready() {
+                    this.addEventListener('user-card-click', this._changeSelectedUser);
+                    super.ready();
+                }
+
                 static get is() {
                     return 'dashboard-app'
                 }
@@ -75,6 +81,10 @@
                     this.usersWithoutMe = arr;
                     this.currentUser = arr[0].name;
                     console.log(arr)
+                }
+
+                _changeSelectedUser(e) {
+                    this.currentUser = e.detail.userName
                 }
 
 
