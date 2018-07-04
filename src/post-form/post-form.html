@@ -38,10 +38,10 @@
         </style>
         <div class="pyramid-card">
             <img id="pyramid-icon" src="../../images/piramide-maya.svg" alt="pyramid">
-            <paper-input invalid="{{validTitle}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+            <paper-input value={{titleInputVal}} invalid="{{validTitle}}" pattern=".{1,10}" required auto-validate error-message="This field must be between 1 and 140 characters long"
                 label="Title"></paper-input>
 
-            <paper-textarea invalid="{{validPost}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+            <paper-textarea rows$="[[rows]]" value={{textAreaValue}} invalid="{{validPost}}" maxlength="13" required auto-validate error-message="This field must be between 1 and 140 characters long"
                 label="Post"></paper-textarea>
 
 
@@ -65,8 +65,13 @@
                         users: Array,
                         validTitle: Boolean,
                         validPost: Boolean,
+                        titleInputVal: String,
+                        textAreaValue: String,
                         disableBtn: {
-                            computed: 'isFormValid(validTitle, validPost)'
+                            computed: 'isFormValid(validTitle, validPost, titleInputVal, textAreaValue)'
+                        },
+                        rows: {
+                            value: 2
                         }
                     }
                 }
@@ -75,7 +80,10 @@
                     this.$.iron.submit();
                 }
 
-                isFormValid(title, post) {
+                isFormValid(title, post, titleInputVal, textAreaValue) {
+                    if (!titleInputVal || !textAreaValue) {
+                        return true
+                    }
                     if (title && post) {
                         return true
                     }
