@@ -36,7 +36,7 @@
 
             <div class="cont">
                 <post-form></post-form>
-                <post-list></post-list>
+                <post-list post-arr="[[usersWithoutMe.0.posts]]"></post-list>
             </div>
         </div>
 
@@ -56,7 +56,6 @@
                             computed: '_filterUsers(response)'
                         },
                         usersWithoutMe: Array
-
                     }
                 }
 
@@ -65,9 +64,7 @@
                     if (response) {
                         response.forEach(user => {
                             if (user) {
-                                if (user.name !== 'Devyn Kunde') {
-                                    arr.push(user)
-                                }
+                                arr.push(user)
                             }
                         });
                         console.log(response, '***')
