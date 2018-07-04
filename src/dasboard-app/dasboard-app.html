@@ -32,7 +32,7 @@
         <iron-ajax auto url="https://posts-services.herokuapp.com/users" handle-as="json" last-response="{{response}}"></iron-ajax>
         <nav-bar></nav-bar>
         <div class="container">
-            <user-list users="[[response]]"></user-list>
+            <user-list users="[[usersWithoutMe]]"></user-list>
 
             <div class="cont">
                 <post-form></post-form>
@@ -50,9 +50,31 @@
 
                 static get properties() {
                     return {
-                        users: Array
+                        users: Array,
+                        response: Array,
+                        usersList: {
+                            computed: '_filterUsers(response)'
+                        },
+                        usersWithoutMe: Array
 
                     }
+                }
+
+                _filterUsers(response) {
+                    let arr = [];
+                    if (response) {
+                        response.forEach(user => {
+                            if (user) {
+                                if (user.name !== 'Devyn Kunde') {
+                                    arr.push(user)
+                                }
+                            }
+                        });
+                        console.log(response, '***')
+
+                    }
+                    this.usersWithoutMe = arr;
+                    console.log(arr)
                 }
 
 
