@@ -37,7 +37,7 @@
 
             <div class="cont">
                 <post-form></post-form>
-                <post-list post-arr="[[usersWithoutMe.0.posts]]"></post-list>
+                <post-list post-arr="[[currentPosts]]"></post-list>
             </div>
         </div>
 
@@ -63,7 +63,10 @@
                             computed: '_filterUsers(response)'
                         },
                         usersWithoutMe: Array,
-                        currentUser: String
+                        currentUser: String,
+                        currentPosts: {
+                            computed: '_getCurrentPosts(currentUser)'
+                        }
                     }
                 }
 
@@ -85,6 +88,16 @@
 
                 _changeSelectedUser(e) {
                     this.currentUser = e.detail.userName
+                }
+
+                _getCurrentPosts(currentUser) {
+                    let posts;
+                    this.usersWithoutMe.forEach(user => {
+                        if (user.name == this.currentUser) {
+                            posts = user.posts
+                        }
+                    });
+                    return posts
                 }
 
 
