@@ -1,0 +1,104 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../src/coatl-login.html">
+<dom-module id="coatl-app">
+    <template>
+        <style>
+            :host {
+
+            }
+
+            coatl-login[unresolved] {
+                pointer-events: none;
+                opacity: 0;
+                width: 0;
+                height: 0;
+                overflow: hidden;
+                position: absolute;
+            }
+        </style>
+
+        <app-location route="{{route}}"></app-location>
+        <app-route
+                route="{{route}}"
+                pattern="/:page"
+                data="{{routeData}}"
+                tail="{{subroute}}"
+        ></app-route>
+
+
+        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404" style="display: inherit;">
+            <!-- login view -->
+            <coatl-login name="login"></coatl-login>
+            <!-- dashboard view  -->
+            <coatl-dashboard name="dashboard" route="[[subroute]]" offline="[[offline]]"></coatl-dashboard>
+
+            <coatl-404-warning name="404"></coatl-404-warning>
+
+        </iron-pages>
+
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class CoatlApp extends Polymer.Element {
+            static get is() { return 'coatl-app'; }
+            static get properties() {
+                return {
+                    page: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged'
+                    },
+                    routeData: Object,
+                    subroute: Object,
+                };
+            }
+            static get observers() { return [
+                '_routePageChanged(routeData.page)'
+            ]}
+            _routePageChanged(page) {
+                console.log("_routePageChanged",page);
+                this.page = page || 'login';
+            }
+            _pageChanged(page, oldPage) {
+
+                console.log("_pageChanged",page,oldPage);
+
+                if (page != null) {
+                    // home route is eagerly loaded
+                    if (page == 'login') {
+                        this._ensureLazyLoaded();
+                    } else {
+                        //// Cuando una carga falló, se debe activar un 404,
+                        // lo que significa que tenemos que cargar ansiosamente la definición de la página 404.
+                        let cb = this._ensureLazyLoaded();
+                        //Polymer.importHref(href, onload, onerror, optAsync){}
+                        Polymer.importHref(
+                            this.resolveUrl('coatl-' + page + '.html'),
+                            cb,cb, true);
+                    }
+                }
+            }
+            _ensureLazyLoaded() {
+                // cargar recursos perezosos después de renderizar y establece `loadComplete` cuando termina.
+                if (!this.loadComplete) {
+                    Polymer.RenderStatus.afterNextRender(this, () => {
+                        Polymer.importHref(this.resolveUrl('lazy-resources.html'), () => {
+                            this.loadComplete = true;
+                        });
+                    });
+                }
+            }
+
+        }
+
+        window.customElements.define(CoatlApp.is, CoatlApp);
+    </script>
+</dom-module>

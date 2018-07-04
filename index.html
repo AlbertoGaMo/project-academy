@@ -17,16 +17,13 @@
             font-family: 'Roboto', 'Noto', sans-serif;
             background: url(http://www.dreamtemplate.com/dreamcodes/bg_images/light/l46.png);
         }
-
-        login-app[unresolved] {
-            pointer-events: none;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            overflow: hidden;
-            position: absolute;
-        }
     </style>
+
+    <base href="/">
+
+    <script>
+        window.Polymer = {rootPath: '/'};
+    </script>
 
     <title>project-academy</title>
     <meta name="description" content="project-academy description">
@@ -37,12 +34,10 @@
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <link rel="import" href="/src/loader/loader-app.html">
-    <link rel="import" href="/src/login/login-app.html">
+    <link rel="import" href="/src/coatl-app.html">
 </head>
 <body>
-    <loader-app></loader-app>
-    <login-app unresolved></login-app>
+    <coatl-app></coatl-app>
     <noscript>
         Habilite JavaScript para ver este sitio web.
     </noscript>

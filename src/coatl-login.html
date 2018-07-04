@@ -1,19 +1,10 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../src/color/color-design.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../src/color-design.html">
 
-<dom-module id="login-app">
+<dom-module id="coatl-login">
     <template>
         <style include="color-design">
             :host {
@@ -35,18 +26,18 @@
                 box-sizing: border-box;
             }
 
-            .paper-card{
+            .paper-card {
                 --paper-card-background-color: var(--card-background-color);
-                --paper-card:{
+                --paper-card: {
                     margin: auto;
                     padding: 30px;
-                    border: 1px solid rgba(0,0,0,0.2);
+                    border: 1px solid rgba(0, 0, 0, 0.2);
                 };
                 --paper-card-header: {
                     padding: 20px;
                     margin: 10px 110px;
                 };
-                --paper-card-actions:{
+                --paper-card-actions: {
                     border: none;
                     display: -ms-flexbox;
                     display: -webkit-flex;
@@ -57,7 +48,7 @@
                 }
             }
 
-            .paper__input{
+            .paper__input {
                 margin-bottom: 30px;
                 --primary-text-color: var(--text-primary-color);
                 /*placeholder*/
@@ -68,8 +59,13 @@
                 border-radius: 5px;
 
                 /* Reset some defaults */
-                --paper-input-container: { padding: 0;};
-                --paper-input-container-underline: { display: none; height: 0;};
+                --paper-input-container: {
+                    padding: 0;
+                };
+                --paper-input-container-underline: {
+                    display: none;
+                    height: 0;
+                };
                 /*--paper-input-container-underline-focus: { display: none; };*/
 
                 /* New custom styles */
@@ -77,13 +73,13 @@
                     box-sizing: border-box;
                     font-size: inherit;
                     padding: 4px;
-                    background: var(--primary-background-color);
+                    background: none;
                 };
                 --paper-input-container-input-focus: {
                     /*background: var(--primary-background-color);*/
                 };
                 --paper-input-container-input-invalid: {
-                    background: rgba(255, 0, 0, 0.3);
+                    /*background: rgba(255, 0, 0, 0.3);*/
                 };
                 --paper-input-container-label: {
                     top: -10px;
@@ -97,6 +93,17 @@
                 --paper-input-container-label-floating: {
                     width: auto;
                 };
+
+                --layout-horizontal: {
+                    background: white;
+                    -ms-flex-direction: row;
+                    -webkit-flex-direction: row;
+                    flex-direction: row;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                }
+
             }
 
             .paper__button {
@@ -110,56 +117,42 @@
                     font-weight: 500 !important;
                 };
             }
-
         </style>
 
-        <app-location route="{{route}}"></app-location>
-        <app-route
-                route="{{route}}"
-                pattern="/:page"
-                data="{{routeData}}"
-                tail="{{subroute}}">
-        </app-route>
+        <paper-card class="paper-card" elevation="5" animatedShadow fadeImage image="../../images/logo.png" alt="logo">
 
+            <div class="card-content">
 
-            <paper-card class="paper-card" elevation="5" animatedShadow fadeImage image="../../images/logo.png" alt="logo">
+                <paper-input id="userMail" class="paper__input" value="{{mail::input}}" label="Usuario"
+                             placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
 
-                <div class="card-content">
+                    <iron-icon icon="mail" slot="prefix"></iron-icon>
+                    <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear"
+                                       title="clear"></paper-icon-button>
 
-                    <paper-input id="userMail" class="paper__input" value="{{mail::input}}" label="Usuario" placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
+                </paper-input>
 
-                        <iron-icon icon="mail" slot="prefix"></iron-icon>
-                        <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear" title="clear" ></paper-icon-button>
+                <paper-input id="userPwd" class="paper__input" type="password" value="{{pwd::input}}" always-float-label
+                             label="Contraseña" required
+                             error-message="Campo contraseña no debe ir vacio."></paper-input>
 
-                    </paper-input>
+            </div>
 
-                    <paper-input id="userPwd" class="paper__input" type="password" value="{{pwd::input}}" always-float-label label="Contraseña" required error-message="Campo contraseña no debe ir vacio." ></paper-input>
+            <div class="card-actions">
+
+                <div>
+
+                    <template is="dom-if" if="[[!loading]]">
+                        <paper-button class="paper__button" on-click="_onClickDoLogin">Iniciar sesión</paper-button>
+                    </template>
+
+                    <template is="dom-if" if="[[loading]]">
+                        <paper-spinner active></paper-spinner>
+                    </template>
 
                 </div>
-
-                <div class="card-actions">
-
-                    <div>
-
-                        <template is="dom-if" if="[[!loading]]">
-                            <paper-button  class="paper__button" on-click="_onClickDoLogin">Iniciar sesión</paper-button>
-                        </template>
-
-                        <template is="dom-if" if="[[loading]]">
-                            <paper-spinner active ></paper-spinner>
-                        </template>
-
-                    </div>
-                </div>
-            </paper-card>
-
-        <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
-            <dashboard-base name="dashboard" route="{{route}}"></dashboard-base>
-        </iron-pages>
-
-
-
-
+            </div>
+        </paper-card>
 
     </template>
 
@@ -168,17 +161,13 @@
          * @customElement
          * @polymer
          */
-        class LoginApp extends Polymer.Element {
-            static get is() { return 'login-app'; }
+        class CoatlLogin extends Polymer.Element {
+            static get is() {
+                return 'coatl-login';
+            }
+
             static get properties() {
                 return {
-                    page: {
-                        type: String,
-                        reflectToAttribute: true,
-                        observer: '_pageChanged',
-                    },
-                    routeData: Object,
-                    subroute: Object,
                     loading: {
                         type: Boolean,
                         value: false
@@ -192,26 +181,21 @@
                         }
                     },
                     mail: {
-                      type: String,
-                      value: ''
+                        type: String,
+                        value: ''
                     },
                     pwd: {
                         type: String,
                         value: ''
                     },
-                    error:{
+                    error: {
                         type: Object,
                         value: {
-                            mail:'',
-                            pwd:''
+                            mail: '',
+                            pwd: ''
                         }
                     }
                 };
-            }
-            static get observers() {
-                return [
-                    '_routePageChanged(routeData.page)'
-                ]
             }
 
             //  === Callbacks ===>
@@ -244,48 +228,29 @@
                  * El trabajo típico que no es crítica, puede incluir la adición de detectores de eventos UI y atributos aria.
                  */
 
-                Polymer.RenderStatus.afterNextRender(this, () => {
+                /*Polymer.RenderStatus.afterNextRender(this, () => {
                     this.parentElement.firstElementChild.remove();
                     this.removeAttribute('unresolved');
-                });
+                });*/
             }
-            _routePageChanged(page) {
-                this.page = page || 'login';
-            }
-            _pageChanged(page,oldPage) {
 
-                console.log("page",page,oldPage);
-
-                if (page != null) {
-                    // home route is eagerly loaded
-                    if (page !== 'login') {
-                        //Polymer.importHref(href, onload, onerror, optAsync){}
-                        /*Polymer.importHref(
-                            this.resolveUrl('../views/view-' + page + '.html'),
-                            ()=> {
-                                if(page==="detail"){
-                                    const page_detail = this.$.viewDetailPage;
-                                    page_detail._setDetail();
-                                }
-                            }, null, true);*/
-                    }
-                }
-            }
             /**
              *
              * @private
              */
-            _checkMail(e){
+            _checkMail(e) {
                 let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(e);
             }
+
             /**
              *
              * @private
              */
-            _clearInput(){
+            _clearInput() {
                 this.mail = '';
             }
+
             /**
              *
              * @private
@@ -294,10 +259,10 @@
 
                 let empty = false;
 
-                inputs.forEach((input)=> {
+                inputs.forEach((input) => {
 
-                    if(!input.validate()){
-                        input.setAttribute('auto-validate','');
+                    if (!input.validate()) {
+                        input.setAttribute('auto-validate', '');
                         empty = true;
                     }
 
@@ -305,36 +270,52 @@
 
                 return empty;
             }
-            _onClickDoLogin(){
 
-                if(this._emptyInputs(this.shadowRoot.querySelectorAll('paper-input'))){return; }
-                if(!this._checkMail(this.mail)){
-                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message','Formato de correo no válido.');
+            _onClickDoLogin() {
+
+                if (this._emptyInputs(this.shadowRoot.querySelectorAll('paper-input'))) {
+                    return;
+                }
+                if (!this._checkMail(this.mail)) {
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message', 'Formato de correo no válido.');
                     this.shadowRoot.querySelector('#userMail').invalid = true;
                     return;
-                }else{
-                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message','Campo email no debe ir vacio.');
+                } else {
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message', 'Campo email no debe ir vacio.');
                     this.shadowRoot.querySelector('#userMail').invalid = false;
                 }
                 this.loading = !this.loading;
                 this._fetch();
             }
-            _fetch(){
 
-                this.set('user',{
+            _fetch() {
+
+                this.set('user', {
                     mail: this.mail,
                     pwd: this.pwd,
                 });
-/*
-                fetch('falta_url_anuar',{ // Url
-                    method: 'post', // Solicitud de tipo "POST"
-                    body: JSON.stringify({user:this.user})
-                })
-                    .then(r => {
-                        console.log('r',r);
-                        if (!r.ok) { throw r;}
-                        if (r.status !== 200) { throw r;}
 
+                fetch('https://posts-services.herokuapp.com/users')
+                    .then((resp) => resp.json()) // Transform the data into json
+                    .then((data)=>  {
+                        // Create and append the li's to the ul
+                        console.log('data',data);
+
+                        for(let i = 0; i < data.length; ++i){
+                            let email =data[i].email;
+                            let pwd = data[i].password;
+                            if(this.mail === email && this.pwd === pwd){
+                                console.log("coincide sesión");
+                               //aqui hay que redirigir al dashboard
+                            }else{
+                                console.log("no coincide sesión");
+                            }
+
+                        }
+
+                        this.loading = !this.loading;
+                        this.mail = '';
+                        this.pwd = '';
 
                     })
                     .catch(e => {
@@ -342,13 +323,13 @@
                         this.loading = !this.loading;
                         this.mail = '';
                         this.pwd = '';
-                    });*/
+                    });
 
-                document.location = '../../src/dashboard/dashboard-base.html';
+                //document.location = '../../src/dashboard/dashboard-base.html';
 
             }
         }
 
-        window.customElements.define(LoginApp.is, LoginApp);
+        window.customElements.define(CoatlLogin.is, CoatlLogin);
     </script>
 </dom-module>
