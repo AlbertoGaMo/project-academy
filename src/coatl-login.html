@@ -313,14 +313,8 @@
                             let pwd = data[i].password;
                             if (this.mail === email && this.pwd === pwd) {
                                 console.log("coincide sesión");
-                                this.dispatchEvent(new CustomEvent('succesful-user-login', {
-                                    bubbles: true,
-                                    composed: true,
-                                    detail: {
-                                        userEmail: this.mail
-                                    }
-                                }));
                                 //aqui hay que redirigir al dashboard
+                                sessionStorage.setItem("uzer", this.mail);
                                 document.location = '/dashboard';
                                 break;
                             }

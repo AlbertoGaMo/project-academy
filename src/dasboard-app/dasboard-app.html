@@ -27,7 +27,7 @@
             }
         </style>
         <iron-ajax auto url="https://posts-services.herokuapp.com/users" handle-as="json" last-response="{{response}}"></iron-ajax>
-        <h1>[[currentUser]]</h1>
+        <h1>ihihih [[currentUserEmail]]</h1>
         <div class="container">
             <user-list users="[[usersWithoutMe]]"></user-list>
 
@@ -44,6 +44,7 @@
 
                 ready() {
                     this.addEventListener('user-card-click', this._changeSelectedUser);
+                    this.currentUserEmail = sessionStorage.getItem("uzer");
                     super.ready();
                 }
 
@@ -62,7 +63,8 @@
                         currentUser: String,
                         currentPosts: {
                             computed: '_getCurrentPosts(currentUser)'
-                        }
+                        },
+                        currentUserEmail: String
                     }
                 }
 

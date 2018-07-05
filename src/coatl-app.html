@@ -22,7 +22,6 @@
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404"
             style="display: inherit;">
             <!-- login view -->
@@ -42,10 +41,6 @@
          * @polymer
          */
         class CoatlApp extends Polymer.Element {
-            ready() {
-                this.addEventListener('succesful-user-login', this._setLoggedInUser);
-                super.ready();
-            }
 
             static get is() {
                 return 'coatl-app';
@@ -59,7 +54,6 @@
                     },
                     routeData: Object,
                     subroute: Object,
-                    loggedInUserEmail: String
                 };
             }
             static get observers() {
@@ -99,10 +93,6 @@
                         });
                     });
                 }
-            }
-
-            _setLoggedInUser(e) {
-                this.loggedInUserEmail = e.detail.userEmail;
             }
 
         }
