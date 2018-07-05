@@ -1,13 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/iron-icon/index.html">
-<link rel="import" href="/bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
 
-<dom-module id="nav-bar">
+<dom-module id="dropdown-menu">
     <template>
         <style>
             .dropbtn {
@@ -55,7 +48,7 @@
             }
         </style>
         <div class="dropdown">
-            <button on-click="handdleClick" class="dropbtn">Dropdown</button>
+            <button on-click="handdleClick" class="dropbtn">Menu</button>
             <div id="myDropdown" class="dropdown-content">
                 <a href="#home">Logout</a>
             </div>
@@ -63,11 +56,11 @@
 
     </template>
     <script>
-        (function navBar(customElements) {
-            class NavBar extends Polymer.Element {
+        (function dropdownMenu(customElements) {
+            class DropdownMenu extends Polymer.Element {
 
                 static get is() {
-                    return 'nav-bar'
+                    return 'dropdown-menu'
                 }
 
                 static get properties() {
@@ -81,7 +74,7 @@
 
                 }
             }
-            customElements.define(NavBar.is, NavBar);
+            customElements.define(DropdownMenu.is, DropdownMenu);
 
         })(window.customElements);
     </script>
