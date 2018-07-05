@@ -7,9 +7,7 @@
 <dom-module id="coatl-app">
     <template>
         <style>
-            :host {
-
-            }
+            :host {}
 
             coatl-login[unresolved] {
                 pointer-events: none;
@@ -22,19 +20,15 @@
         </style>
 
         <app-location route="{{route}}"></app-location>
-        <app-route
-                route="{{route}}"
-                pattern="/:page"
-                data="{{routeData}}"
-                tail="{{subroute}}"
-        ></app-route>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
 
-        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404" style="display: inherit;">
+        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404"
+            style="display: inherit;">
             <!-- login view -->
             <coatl-login name="login"></coatl-login>
             <!-- dashboard view  -->
-            <coatl-dashboard name="dashboard" route="[[route]]" ></coatl-dashboard>
+            <coatl-dashboard name="dashboard" route="[[route]]"></coatl-dashboard>
 
             <coatl-404-warning name="404"></coatl-404-warning>
 
@@ -48,7 +42,14 @@
          * @polymer
          */
         class CoatlApp extends Polymer.Element {
-            static get is() { return 'coatl-app'; }
+            ready() {
+                this.addEventListener('succesful-user-login', this._setLoggedInUser);
+                super.ready();
+            }
+
+            static get is() {
+                return 'coatl-app';
+            }
             static get properties() {
                 return {
                     page: {
@@ -58,18 +59,21 @@
                     },
                     routeData: Object,
                     subroute: Object,
+                    loggedInUserEmail: String
                 };
             }
-            static get observers() { return [
-                '_routePageChanged(routeData.page)'
-            ]}
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)'
+                ]
+            }
             _routePageChanged(page) {
-                console.log("_routePageChanged",page);
+                console.log("_routePageChanged", page);
                 this.page = page || 'login';
             }
             _pageChanged(page, oldPage) {
 
-                console.log("_pageChanged",page,oldPage);
+                console.log("_pageChanged", page, oldPage);
 
                 if (page != null) {
                     // home route is eagerly loaded
@@ -82,7 +86,7 @@
                         //Polymer.importHref(href, onload, onerror, optAsync){}
                         Polymer.importHref(
                             this.resolveUrl('coatl-' + page + '.html'),
-                            cb,cb, true);
+                            cb, cb, true);
                     }
                 }
             }
@@ -95,6 +99,10 @@
                         });
                     });
                 }
+            }
+
+            _setLoggedInUser(e) {
+                this.loggedInUserEmail = e.detail.userEmail;
             }
 
         }
