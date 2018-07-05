@@ -1,0 +1,61 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<dom-module id="coatl-dashboard">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            app-toolbar {
+                background-color: white;
+                box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
+            }
+            .content {
+                padding: 16px 40px;
+            }
+            .card {
+                background-color: white;
+                max-width: 720px;
+                height: 500px;
+                margin: 16px auto;
+                box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+            }
+            @media (max-width: 600px) {
+                .content {
+                    padding: 0;
+                }
+                .card {
+                    margin: 8px;
+                }
+            }
+        </style>
+        <app-toolbar></app-toolbar>
+        <div class="content">
+            <div class="card">
+                <h2>Hello [[prop1]]!</h2>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class CoatlDashboard extends Polymer.Element {
+            static get is() { return 'coatl-dashboard'; }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'coatl-base'
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(CoatlDashboard.is, CoatlDashboard);
+    </script>
+</dom-module>

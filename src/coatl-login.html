@@ -1,0 +1,326 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../src/color-design.html">
+
+<dom-module id="coatl-login">
+    <template>
+        <style include="color-design">
+            :host {
+                height: 100%;
+                overflow: hidden;
+                user-select: none;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                -ms-flex-direction: column;
+                -webkit-flex-direction: column;
+                flex-direction: column;
+                -ms-flex-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+                -ms-flex-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+
+            .paper-card {
+                --paper-card-background-color: var(--card-background-color);
+                --paper-card: {
+                    margin: auto;
+                    padding: 30px;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                };
+                --paper-card-header: {
+                    padding: 20px;
+                    margin: 10px 110px;
+                };
+                --paper-card-actions: {
+                    border: none;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    -ms-flex-pack: center;
+                    -webkit-justify-content: center;
+                    justify-content: center;
+                }
+            }
+
+            .paper__input {
+                margin-bottom: 30px;
+                --primary-text-color: var(--text-primary-color);
+                /*placeholder*/
+                --paper-input-container-color: var(--input-placeholder-color);
+                --paper-input-container-focus-color: var(--primary-text-color);
+                --paper-input-container-invalid-color: red;
+                border: var(--input-container-border);
+                border-radius: 5px;
+
+                /* Reset some defaults */
+                --paper-input-container: {
+                    padding: 0;
+                };
+                --paper-input-container-underline: {
+                    display: none;
+                    height: 0;
+                };
+                /*--paper-input-container-underline-focus: { display: none; };*/
+
+                /* New custom styles */
+                --paper-input-container-input: {
+                    box-sizing: border-box;
+                    font-size: inherit;
+                    padding: 4px;
+                    background: none;
+                };
+                --paper-input-container-input-focus: {
+                    /*background: var(--primary-background-color);*/
+                };
+                --paper-input-container-input-invalid: {
+                    /*background: rgba(255, 0, 0, 0.3);*/
+                };
+                --paper-input-container-label: {
+                    top: -10px;
+                    left: 5px;
+                    background: transparent;
+                    padding: 2px;
+                    font-weight: bold;
+                    font-size: 18pt;
+                    color: var(--primary-text-color);
+                };
+                --paper-input-container-label-floating: {
+                    width: auto;
+                };
+
+                --layout-horizontal: {
+                    background: white;
+                    -ms-flex-direction: row;
+                    -webkit-flex-direction: row;
+                    flex-direction: row;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                }
+
+            }
+
+            .paper__button {
+                width: 100%;
+                margin: 0;
+                background-color: var(--default-primary-color);
+                color: white;
+                font-weight: 500 !important;
+                --paper-button-raised-keyboard-focus: {
+                    color: white !important;
+                    font-weight: 500 !important;
+                };
+            }
+        </style>
+
+        <paper-card class="paper-card" elevation="5" animatedShadow fadeImage image="../../images/logo.png" alt="logo">
+
+            <div class="card-content">
+
+                <paper-input id="userMail" class="paper__input" value="{{mail::input}}" label="Usuario"
+                             placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
+
+                    <iron-icon icon="mail" slot="prefix"></iron-icon>
+                    <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear"
+                                       title="clear"></paper-icon-button>
+
+                </paper-input>
+
+                <paper-input id="userPwd" class="paper__input" type="password" value="{{pwd::input}}" always-float-label
+                             label="Contraseña" required
+                             error-message="Campo contraseña no debe ir vacio."></paper-input>
+
+            </div>
+
+            <div class="card-actions">
+
+                <div>
+
+                    <template is="dom-if" if="[[!loading]]">
+                        <paper-button class="paper__button" on-click="_onClickDoLogin">Iniciar sesión</paper-button>
+                    </template>
+
+                    <template is="dom-if" if="[[loading]]">
+                        <paper-spinner active></paper-spinner>
+                    </template>
+
+                </div>
+            </div>
+        </paper-card>
+
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class CoatlLogin extends Polymer.Element {
+            static get is() {
+                return 'coatl-login';
+            }
+
+            static get properties() {
+                return {
+                    loading: {
+                        type: Boolean,
+                        value: false
+                    },
+                    mail: {
+                        type: String,
+                        value: ''
+                    },
+                    pwd: {
+                        type: String,
+                        value: ''
+                    },
+                    error: {
+                        type: Object,
+                        value: {
+                            mail: '',
+                            pwd: ''
+                        }
+                    }
+                };
+            }
+
+            //  === Callbacks ===>
+
+            /**
+             * Ciclos de vida (Callbacks)
+             *
+             * @descriptor
+             *
+             * La especificación de elemento personalizado proporciona un conjunto de devoluciones de llamada
+             * llamadas "custom element reactions" que le permiten ejecutar código de usuario en respuesta a ciertos
+             * cambios de ciclo de vida.
+             *
+             */
+
+            /** @ready
+             * Invocada la primera vez que el elemento se agrega al DOM.
+             */
+            ready() {
+                // Llamada al método de la superclase "ready()". Esto es necesario para que Polymer pueda engancharse en el ciclo de vida del elemento.
+                super.ready();
+                /**
+                 * @afterNextRender Encola una devolución de llamada que se ejecutará después de la siguiente representación,
+                 * equivalente a una tarea (setTimeout) después de la siguiente requestAnimationFrame.
+                 *
+                 * @description
+                 *
+                 * Este método es útil para ajustar el rendimiento del primer render de un elemento o aplicación al diferir
+                 * el trabajo no crítico hasta después de la primera pintura.
+                 * El trabajo típico que no es crítica, puede incluir la adición de detectores de eventos UI y atributos aria.
+                 */
+
+                /*Polymer.RenderStatus.afterNextRender(this, () => {
+                    this.parentElement.firstElementChild.remove();
+                    this.removeAttribute('unresolved');
+                });*/
+            }
+
+            /**
+             *
+             * @private
+             */
+            _checkMail(e) {
+                let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(e);
+            }
+
+            /**
+             *
+             * @private
+             */
+            _clearInput() {
+                this.mail = '';
+            }
+
+            /**
+             *
+             * @private
+             */
+            _emptyInputs(inputs) {
+
+                let empty = false;
+
+                inputs.forEach((input) => {
+
+                    if (!input.validate()) {
+                        input.setAttribute('auto-validate', '');
+                        empty = true;
+                    }
+
+                });
+
+                return empty;
+            }
+
+            _onClickDoLogin() {
+
+                if (this._emptyInputs(this.shadowRoot.querySelectorAll('paper-input'))) {
+                    return;
+                }
+                if (!this._checkMail(this.mail)) {
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message', 'Formato de correo no válido.');
+                    this.shadowRoot.querySelector('#userMail').invalid = true;
+                    return;
+                } else {
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message', 'Campo email no debe ir vacio.');
+                    this.shadowRoot.querySelector('#userMail').invalid = false;
+                }
+                this.loading = !this.loading;
+                this._fetch();
+            }
+
+            _fetch() {
+
+                console.log('JSON.stringify({email:this.mail,password: this.pwd})',JSON.stringify({email:this.mail,password: this.pwd}));
+
+                fetch('https://posts-services.herokuapp.com/users'/*,{
+                    method: 'post',
+                    body: JSON.stringify({email:this.mail,password: this.pwd})
+                }*/)
+                    .then((resp) => resp.json()) // Transform the data into json
+                    .then((data)=>  {
+                        // Create and append the li's to the ul
+                        console.log('data',data);
+
+                        for(let i = 0; i < data.length; ++i){
+                            let email =data[i].email;
+                            let pwd = data[i].password;
+                            if(this.mail === email && this.pwd === pwd){
+                                console.log("coincide sesión");
+                               //aqui hay que redirigir al dashboard
+                                document.location = '/dashboard';
+                                break;
+                            }
+                        }
+
+                        this.loading = !this.loading;
+                        this.mail = '';
+                        this.pwd = '';
+
+
+
+                    })
+                    .catch(e => {
+                        console.log(`Parece que hubo un problema ===>\n Código de estado: ${e.status}\n Mensaje: ${e.statusText}`);
+                        this.loading = !this.loading;
+                        this.mail = '';
+                        this.pwd = '';
+                    });
+
+            }
+        }
+
+        window.customElements.define(CoatlLogin.is, CoatlLogin);
+    </script>
+</dom-module>

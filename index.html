@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <link rel="stylesheet" type="text/css" href="./css/spinner.css">
-
     <style>
         html {
             -webkit-tap-highlight-color: transparent;
@@ -22,17 +20,17 @@
             background: #eeeeee;
             transition: opacity ease-in 0.2s;
             font-family: 'Roboto', 'Noto', sans-serif;
-        }
-
-        login-app[unresolved] {
-            pointer-events: none;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            overflow: hidden;
-            position: absolute;
+            background: url(http://www.dreamtemplate.com/dreamcodes/bg_images/light/l46.png);
         }
     </style>
+
+    <base href="/">
+
+    <script>
+        window.Polymer = {
+            rootPath: '/'
+        };
+    </script>
 
     <title>project-academy</title>
     <meta name="description" content="project-academy description">
@@ -45,6 +43,7 @@
 
     <link rel="import" href="/src/login/login-app.html">
     <link rel="import" href="/src/dasboard-app/dasboard-app.html">
+    <link rel="import" href="/src/coatl-app.html">
 </head>
 
 <body>
@@ -56,6 +55,7 @@
     </div>
     <login-app unresolved></login-app> -->
     <dashboard-app></dashboard-app>
+    <coatl-app></coatl-app>
     <noscript>
         Habilite JavaScript para ver este sitio web.
     </noscript>
