@@ -26,7 +26,7 @@
                 }
             }
         </style>
-        <iron-ajax auto url="https://posts-services.herokuapp.com/users" handle-as="json" last-response="{{response}}"></iron-ajax>
+        <iron-ajax id="iron" url="https://posts-services.herokuapp.com/users" handle-as="json" last-response="{{response}}"></iron-ajax>
         <h1>ihihih [[currentUserEmail]]</h1>
         <div class="container">
             <user-list users="[[usersWithoutMe]]"></user-list>
@@ -45,8 +45,15 @@
                 ready() {
                     this.addEventListener('user-card-click', this._changeSelectedUser);
                     this.currentUserEmail = sessionStorage.getItem("uzer");
+
                     super.ready();
                 }
+
+                connectedCallback() {
+                    super.connectedCallback();
+                    this.$.iron.generateRequest();
+                }
+
 
                 static get is() {
                     return 'dashboard-app'
@@ -73,6 +80,11 @@
                     if (response) {
                         response.forEach(user => {
                             if (user) {
+                                if (user.email === this.currentUserEmail) {
+                                    console.log(user.email)
+                                    user.isMainUser = true;
+                                }
+
                                 arr.push(user)
                             }
                         });

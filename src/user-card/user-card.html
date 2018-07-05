@@ -10,12 +10,17 @@
                 padding: 1rem;
                 width: 100%;
                 margin-bottom: 15px;
+            }
 
+            .card-container {
+                order: -3;
+                outline: 3px solid rebeccapurple;
             }
         </style>
 
-        <paper-card class="card-container" on-click="_handleClick">
+        <paper-card class$="[[main]]" on-click="_handleClick">
             <h1>[[user.name]]</h1>
+            <h1>Soy main [[user.isMainUser]]</h1>
             <paper-ripple></paper-ripple>
         </paper-card>
 
@@ -29,7 +34,10 @@
 
                 static get properties() {
                     return {
-                        user: Object
+                        user: Object,
+                        main: {
+                            computed: '_isMainUser(user)'
+                        }
                     }
                 }
 
@@ -41,6 +49,12 @@
                             userName: this.user.name
                         }
                     }));
+                }
+
+                _isMainUser(user) {
+                    if (user.isMainUser) {
+                        return 'card-container'
+                    }
                 }
 
             }
