@@ -81,8 +81,7 @@
                         response.forEach(user => {
                             if (user) {
                                 if (user.email === this.currentUserEmail) {
-                                    console.log(user.email)
-                                    user.isMainUser = true;
+                                    user.isMainUser = 'mainusr';
                                 }
 
                                 arr.push(user)

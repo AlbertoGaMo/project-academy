@@ -5,6 +5,14 @@
 <dom-module id="user-card">
     <template>
         <style>
+            :host {
+                order: 2;
+            }
+
+            :host(.mainusr) {
+                order: 1;
+            }
+
             paper-card {
                 border-left: 10px solid blue;
                 padding: 1rem;
@@ -12,9 +20,10 @@
                 margin-bottom: 15px;
             }
 
-            .card-container {
-                order: -3;
+
+            .main {
                 outline: 3px solid rebeccapurple;
+
             }
         </style>
 
@@ -53,8 +62,9 @@
 
                 _isMainUser(user) {
                     if (user.isMainUser) {
-                        return 'card-container'
+                        return 'main'
                     }
+                    return 'regular'
                 }
 
             }

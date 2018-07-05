@@ -20,7 +20,7 @@
 
         <div class="user-list">
             <template is="dom-repeat" items="{{users}}">
-                <user-card user="[[item]]"></user-card>
+                <user-card class$="[[item.isMainUser]]" user="[[item]]"></user-card>
             </template>
         </div>
 
