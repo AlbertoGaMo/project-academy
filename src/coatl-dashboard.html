@@ -1,17 +1,51 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="/src/dasboard-app/dasboard-app.html">
-<link rel="import" href="/src/dropdown-menu/dropdown-menu.html">
+<link rel="import" href="../src/dropdown-menu/dropdown-menu.html">
+<link rel="import" href="../src/dasboard-app/dasboard-app.html">
+<link rel="import" href="../bower_components/iron-meta/iron-meta.html">
 
 <dom-module id="coatl-dashboard">
     <template>
         <style>
+            :host {
+                display: block;
+            }
+
+            app-toolbar {
+                background-color: white;
+                box-shadow: 0 5px 6px -3px rgba(0, 0, 0, 0.4);
+            }
+
+            .content {
+                padding: 16px 40px;
+            }
+
+            .card {
+                background-color: white;
+                max-width: 720px;
+                height: 500px;
+                margin: 16px auto;
+                box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+            }
+
+            @media (max-width: 600px) {
+                .content {
+                    padding: 0;
+                }
+
+                .card {
+                    margin: 8px;
+                }
+            }
         </style>
+
+        <iron-meta id="meta"></iron-meta>
+
         <app-toolbar>
             <dropdown-menu></dropdown-menu>
         </app-toolbar>
 
-        <dashboard-app></dashboard-app>
+        <dashboard-app response="[[response]]"></dashboard-app>
 
     </template>
 
@@ -24,14 +58,25 @@
             static get is() {
                 return 'coatl-dashboard';
             }
+
             static get properties() {
                 return {
-                    prop1: {
-                        type: String,
-                        value: 'coatl-base'
-                    }
+                    response:Array
+
                 };
             }
+            static get observers() { return [
+                '_userInfoLoged(user)'
+            ]}
+
+            _userInfoLoged(info){
+                console.log('Datos del usuario logueado',info);
+                let data = this.$.meta.byKey('data');
+                console.log('data',data);
+                this.set('response',data);
+
+            }
+
         }
 
         window.customElements.define(CoatlDashboard.is, CoatlDashboard);

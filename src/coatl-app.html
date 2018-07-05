@@ -34,7 +34,7 @@
             <!-- login view -->
             <coatl-login name="login"></coatl-login>
             <!-- dashboard view  -->
-            <coatl-dashboard name="dashboard" route="[[route]]" ></coatl-dashboard>
+            <coatl-dashboard name="dashboard" user="[[user]]"></coatl-dashboard>
 
             <coatl-404-warning name="404"></coatl-404-warning>
 
@@ -58,11 +58,16 @@
                     },
                     routeData: Object,
                     subroute: Object,
+                    user:Object
                 };
             }
             static get observers() { return [
                 '_routePageChanged(routeData.page)'
             ]}
+            ready(){
+                super.ready();
+                this.addEventListener('change-page', (e)=> this._onChangePage(e));
+            }
             _routePageChanged(page) {
                 console.log("_routePageChanged",page);
                 this.page = page || 'login';
@@ -95,6 +100,13 @@
                         });
                     });
                 }
+            }
+            _onChangePage(e){
+                let detail = event.detail;
+                this.set('user',detail.user);
+                this.set('routeData',{
+                    page : detail.page
+                });
             }
 
         }

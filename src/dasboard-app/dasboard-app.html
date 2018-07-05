@@ -2,7 +2,6 @@
 <link rel="import" href="../user-list/user-list.html">
 <link rel="import" href="../post-form/post-form.html">
 <link rel="import" href="../post-list/post-list.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="dashboard-app">
     <template>
@@ -28,7 +27,7 @@
                 }
             }
         </style>
-        <iron-ajax auto url="https://posts-services.herokuapp.com/users" handle-as="json" last-response="{{response}}"></iron-ajax>
+
         <h1>[[currentUser]]</h1>
         <div class="container">
             <user-list users="[[usersWithoutMe]]"></user-list>
@@ -41,67 +40,65 @@
 
     </template>
     <script>
-        (function dashboardApp(customElements) {
-            class DashboardApp extends Polymer.Element {
+        class DashboardApp extends Polymer.Element {
 
-                ready() {
-                    this.addEventListener('user-card-click', this._changeSelectedUser);
-                    super.ready();
-                }
+            static get is() {
+                return 'dashboard-app'
+            }
 
-                static get is() {
-                    return 'dashboard-app'
-                }
-
-                static get properties() {
-                    return {
-                        users: Array,
-                        response: Array,
-                        usersList: {
-                            computed: '_filterUsers(response)'
-                        },
-                        usersWithoutMe: Array,
-                        currentUser: String,
-                        currentPosts: {
-                            computed: '_getCurrentPosts(currentUser)'
-                        }
+            static get properties() {
+                return {
+                    users: Array,
+                    response: Array,
+                    usersList: {
+                        computed: '_filterUsers(response)'
+                    },
+                    usersWithoutMe: Array,
+                    currentUser: String,
+                    currentPosts: {
+                        computed: '_getCurrentPosts(currentUser)'
                     }
                 }
+            }
 
-                _filterUsers(response) {
-                    let arr = [];
-                    if (response) {
-                        response.forEach(user => {
-                            if (user) {
-                                arr.push(user)
-                            }
-                        });
-                        console.log(response, '***')
+            ready() {
+                this.addEventListener('user-card-click', this._changeSelectedUser);
+                super.ready();
+            }
 
-                    }
-                    this.usersWithoutMe = arr;
-                    this.currentUser = arr[0].name;
-                    console.log(arr)
-                }
-
-                _changeSelectedUser(e) {
-                    this.currentUser = e.detail.userName
-                }
-
-                _getCurrentPosts(currentUser) {
-                    let posts;
-                    this.usersWithoutMe.forEach(user => {
-                        if (user.name == this.currentUser) {
-                            posts = user.posts
+            _filterUsers(response) {
+                let arr = [];
+                if (response) {
+                    response.forEach(user => {
+                        if (user) {
+                            arr.push(user)
                         }
                     });
-                    return posts
+                    console.log(response, '***')
+
                 }
-
-
+                this.usersWithoutMe = arr;
+                this.currentUser = arr[0].name;
+                console.log(arr)
             }
-            customElements.define(DashboardApp.is, DashboardApp);
 
-        })(window.customElements);
+            _changeSelectedUser(e) {
+                this.currentUser = e.detail.userName
+            }
+
+            _getCurrentPosts(currentUser) {
+                let posts;
+                this.usersWithoutMe.forEach(user => {
+                    if (user.name == this.currentUser) {
+                        posts = user.posts
+                    }
+                });
+                return posts
+            }
+
+
+        }
+
+        window.customElements.define(DashboardApp.is, DashboardApp);
     </script>
 </dom-module>
