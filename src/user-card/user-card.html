@@ -5,14 +5,19 @@
 <dom-module id="user-card">
     <template>
         <style>
+            paper-card {
+                border-left: 10px solid blue;
+                padding: 1rem;
+                width: 100%;
+                margin-bottom: 15px;
+
+            }
         </style>
 
-        <div on-click="_handleClick">
-            <paper-card>
-                <h1>[[user.name]]</h1>
-                <paper-ripple></paper-ripple>
-            </paper-card>
-        </div>
+        <paper-card class="card-container" on-click="_handleClick">
+            <h1>[[user.name]]</h1>
+            <paper-ripple></paper-ripple>
+        </paper-card>
 
     </template>
     <script>
