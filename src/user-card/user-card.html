@@ -23,10 +23,21 @@
             .main {
                 border-left: 10px solid rgb(83, 83, 197);
             }
+
+            .rate-image {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 70px;
+                background: url('/images/aztec.svg');
+                background-size: cover;
+            }
         </style>
 
         <paper-card class$="[[main]]" on-click="_handleClick">
             <h1>[[user.name]]</h1>
+            <div class="rate-image"></div>
             <paper-ripple></paper-ripple>
         </paper-card>
 
