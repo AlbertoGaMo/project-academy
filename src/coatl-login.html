@@ -139,6 +139,7 @@
                     text-align: center;
                 }
             }
+
         </style>
 
         <paper-card class="paper-card" elevation="5" animatedShadow fadeImage image="../../images/logo.png" alt="logo">
@@ -177,6 +178,7 @@
         <paper-toast id="toast" class="paper__toast" text="Inicio de sesión incorrecto." horizontalAlign="auto"></paper-toast>
 
         <iron-meta key="data" value="{{data}}"></iron-meta>
+        <iron-meta key="userInfo" value="{{userInfo}}"></iron-meta>
 
     </template>
 
@@ -212,6 +214,7 @@
                             pwd: ''
                         }
                     },
+                    userInfo:Object,
                     data: {
                         type: Array,
                         value: []
@@ -335,7 +338,16 @@
 
                             let email = data[i].email;
                             let pwd = data[i].password;
+                            let name = data[i].name;
+                            let address = data[i].address;
+                            let phone = data[i].phone;
 
+                            this.set('userInfo',{
+                                email: email,
+                                name: name,
+                                address: address,
+                                phone: phone
+                            });
 
                             if (this.mail === email && this.pwd === pwd) {
 
@@ -344,12 +356,17 @@
 
 
                                 this.set('data', data);
+
+
                                 //aqui hay que redirigir al dashboard
                                 this.dispatchEvent(new CustomEvent('change-page', {
                                     bubbles: true,
                                     composed: true,
                                     detail: {
                                         user: {
+                                            name: name,
+                                            address: address,
+                                            phone: phone,
                                             email: this.mail,
                                             password: this.pwd,
                                             active: true
@@ -357,6 +374,7 @@
                                         page: 'dashboard'
                                     }
                                 }));
+
                                 return;
                             }
 

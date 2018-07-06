@@ -37,6 +37,9 @@
                     margin: 8px;
                 }
             }
+            app-toolbar{
+                z-index: 99;
+            }
         </style>
 
         <iron-meta id="meta"></iron-meta>
@@ -71,6 +74,37 @@
                 return [
                     '_userInfoLoged(user)'
                 ]
+            }
+
+            ready(){
+                // Llamada al método de la superclase "ready()". Esto es necesario para que Polymer pueda engancharse en el ciclo de vida del elemento.
+                super.ready();
+                /**
+                 * @afterNextRender Encola una devolución de llamada que se ejecutará después de la siguiente representación,
+                 * equivalente a una tarea (setTimeout) después de la siguiente requestAnimationFrame.
+                 *
+                 * @description
+                 *
+                 * Este método es útil para ajustar el rendimiento del primer render de un elemento o aplicación al diferir
+                 * el trabajo no crítico hasta después de la primera pintura.
+                 * El trabajo típico que no es crítica, puede incluir la adición de detectores de eventos UI y atributos aria.
+                 */
+
+                Polymer.RenderStatus.afterNextRender(this, () => {
+                    console.log("aqui en el ready");
+                    //this.parentElement.firstElementChild.remove();
+                    //this.removeAttribute('unresolved');
+                });
+
+            }
+
+            connectedCallback(){
+                super.connectedCallback();
+                console.log("aqui en el conected");
+            }
+            attached(){
+                super.attached();
+                console.log("aqui en atacch");
             }
 
             _userInfoLoged(info) {

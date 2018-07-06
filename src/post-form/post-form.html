@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-meta/iron-meta.html">
 
 <dom-module id="post-form">
     <template>
@@ -42,16 +43,24 @@
                 margin-top: 16px;
             }
         </style>
-        <div class="pyramid-card">
-            <img id="pyramid-icon" src="../../images/piramide-maya.svg" alt="pyramid">
-            <paper-input value={{titleInputVal}} invalid="{{ivalidTitle}}" pattern=".{1,10}" required auto-validate error-message="This field must be between 1 and 140 characters long"
-                label="Title"></paper-input>
 
-            <paper-textarea rows$="[[rows]]" value={{textAreaValue}} invalid="{{invalidPost}}" maxlength="13" required auto-validate
-                error-message="This field must be between 1 and 140 characters long" label="Post"></paper-textarea>
+        <iron-meta id="meta"></iron-meta>
 
-            <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
-        </div>
+        <iron-form id="iron">
+            <form>
+                <div class="pyramid-card">
+                    <img id="pyramid-icon" src="../../images/piramide-maya.svg" alt="pyramid">
+                    <paper-input value={{titleInputVal::input}} invalid="{{ivalidTitle}}" pattern=".{1,10}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+                                 label="Title"></paper-input>
+
+                    <paper-textarea rows$="[[rows]]" value={{textAreaValue::input}} invalid="{{invalidPost}}" maxlength="13" required auto-validate
+                                    error-message="This field must be between 1 and 140 characters long" label="Post"></paper-textarea>
+
+                    <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
+                </div>
+            </form>
+        </iron-form>
+
 
 
 
@@ -80,7 +89,43 @@
                 }
 
                 submitForm() {
-                    this.$.iron.submit();
+                    console.log("Crear post");
+
+                    let dataUser = this.$.meta.byKey('userInfo');
+                    let title = this.titleInputVal;
+
+                    fetch('https://posts-services.herokuapp.com/posts'
+                        ,{
+                        method: 'post',
+                        body: JSON.stringify({user:{email:dataUser.email},post:{title:this.titleInputVal,body:this.textAreaValue}})
+                        }
+                    )
+                        .then((resp) => resp.json()) // Transform the data into json
+                        .then((d) => {
+
+                            console.log("data post",d);
+
+                            /*this.loading = !this.loading;
+                            this.mail = '';
+                            this.pwd = '';
+                            this.$.toast.open();
+                            */
+
+
+
+                        })
+                        .catch(e => {
+                            console.log(
+                                `Parece que hubo un problema ===>\n Código de estado: ${e.status}\n Mensaje: ${e.statusText}`
+                            );
+                        });
+
+
+
+                    //this.$.iron.submit();
+
+
+
                 }
 
                 isFormValid(invalidTitle, invalidPost, titleInputVal, textAreaValue) {

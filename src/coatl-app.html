@@ -4,27 +4,32 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../src/coatl-login.html">
+<link rel="import" href="../src/loader/loader-app.html">
 <dom-module id="coatl-app">
     <template>
         <style>
-            coatl-login[unresolved] {
+            loader-app[unresolved]{
                 pointer-events: none;
                 opacity: 0;
                 width: 0;
                 height: 0;
+                overflow: hidden;
                 position: absolute;
+                animation: all .4 linear;
             }
         </style>
 
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
+        <loader-app id="loaderSpinner" unresolved></loader-app>
+
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404"
             style="display: inherit;">
             <!-- login view -->
             <coatl-login name="login"></coatl-login>
             <!-- dashboard view  -->
-            <coatl-dashboard name="dashboard" user="[[user]]"></coatl-dashboard>
+            <coatl-dashboard name="dashboard" user="[[user]]" ></coatl-dashboard>
 
             <coatl-404-warning name="404"></coatl-404-warning>
 
@@ -65,6 +70,7 @@
             }
             _routePageChanged(page) {
                 console.log("_routePageChanged", page);
+                this.$.loaderSpinner.setAttribute("unresolved","");
                 this.page = page || 'login';
             }
             _pageChanged(page, oldPage) {
@@ -99,9 +105,16 @@
             _onChangePage(e) {
                 let detail = event.detail;
                 this.set('user', detail.user);
-                this.set('routeData', {
-                    page: detail.page
-                });
+
+                this.$.loaderSpinner.removeAttribute("unresolved");
+
+                setTimeout(()=>{
+
+                    this.set('routeData', {
+                        page: detail.page
+                    });
+
+                },5000);
             }
 
         }
