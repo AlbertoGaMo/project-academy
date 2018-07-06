@@ -12,7 +12,6 @@
         <style include="color-design">
             :host {
                 height: 100%;
-                overflow: hidden;
                 user-select: none;
                 display: -ms-flexbox;
                 display: -webkit-flex;
@@ -338,9 +337,6 @@
                             if (this.mail === email && this.pwd === pwd) {
 
                                 this.loading = !this.loading;
-                                this.mail = '';
-                                this.pwd = '';
-                                this.data = [];
 
 
                                 this.set('data', data);

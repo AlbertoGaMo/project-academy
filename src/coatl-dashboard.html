@@ -44,8 +44,9 @@
         <app-toolbar>
             <dropdown-menu></dropdown-menu>
         </app-toolbar>
+        <h1>usuario looged [[loggedInUser.email]]</h1>
 
-        <dashboard-app response="[[response]]"></dashboard-app>
+        <dashboard-app loggedin-user="[[loggedInUser]]" response="[[response]]"></dashboard-app>
 
     </template>
 
@@ -61,19 +62,23 @@
 
             static get properties() {
                 return {
-                    response:Array
+                    response: Array,
+                    loggedInUser: Object
 
                 };
             }
-            static get observers() { return [
-                '_userInfoLoged(user)'
-            ]}
+            static get observers() {
+                return [
+                    '_userInfoLoged(user)'
+                ]
+            }
 
-            _userInfoLoged(info){
-                console.log('Datos del usuario logueado',info);
+            _userInfoLoged(info) {
+                console.log('Datos del usuario logueado', info);
+                this.loggedInUser = info;
                 let data = this.$.meta.byKey('data');
-                console.log('data',data);
-                this.set('response',data);
+                console.log('data', data);
+                this.set('response', data);
 
             }
 

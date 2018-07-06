@@ -9,7 +9,6 @@
             :host {
                 text-align: center;
                 color: red;
-                overflow: hidden;
                 user-select: none;
                 display: -ms-flexbox;
                 display: -webkit-flex;
@@ -40,10 +39,12 @@
                 margin: 0 5px 15px 5px;
                 font-weight: bold;
             }
+
             .paper__button {
                 background: var(--default-primary-color);
                 color: white;
             }
+
             .paper__button:hover {
                 background: #8080806e;
             }
@@ -64,7 +65,9 @@
     </template>
     <script>
         class Coatl404Warning extends Polymer.Element {
-            static get is() { return 'coatl-404-warning' }
+            static get is() {
+                return 'coatl-404-warning'
+            }
         }
         window.customElements.define(Coatl404Warning.is, Coatl404Warning);
     </script>

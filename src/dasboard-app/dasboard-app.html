@@ -27,6 +27,7 @@
         </style>
 
         <h1>[[currentUser]]</h1>
+        <h1>quien se loggeo? [[loggedinUser.email]]</h1>
         <div class="container">
             <user-list users="[[usersWithoutMe]]"></user-list>
 
@@ -55,7 +56,8 @@
                     currentUser: String,
                     currentPosts: {
                         computed: '_getCurrentPosts(currentUser)'
-                    }
+                    },
+                    loggedinUser: String
                 }
             }
 
@@ -69,6 +71,10 @@
                 if (response) {
                     response.forEach(user => {
                         if (user) {
+                            if (user.email === this.loggedinUser.email) {
+                                user.isMainUser = 'mainusr';
+                            }
+
                             arr.push(user)
                         }
                     });
