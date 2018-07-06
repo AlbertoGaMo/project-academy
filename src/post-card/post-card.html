@@ -22,7 +22,6 @@
                 .post {
                     flex-direction: column;
                 }
-
             }
 
             .post-left {
@@ -32,6 +31,8 @@
                 padding: 3em;
                 position: relative;
             }
+
+
 
             .post-left_title {
                 font-size: 2em;
@@ -75,6 +76,23 @@
             .post-right_body {
                 line-height: 2;
                 padding: 2em;
+            }
+
+            @media (max-width: 768px) {
+                .post-left {
+                    width: 90%;
+                    padding: 0;
+                }
+
+                .post-right {
+                    width: 90%;
+                }
+
+                .post {
+                    display: flex;
+                    width: 100%;
+                    margin: 1rem;
+                }
             }
 
             .post-right_body p {

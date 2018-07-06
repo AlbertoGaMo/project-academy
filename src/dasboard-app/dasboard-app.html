@@ -45,6 +45,15 @@
             sample-content {
                 padding-top: 64px;
             }
+
+            post-list {
+                width: 100%;
+            }
+
+            post-form {
+                display: flex;
+                justify-content: center;
+            }
         </style>
 
         <app-header reveals>
@@ -92,6 +101,7 @@
 
             ready() {
                 this.addEventListener('user-card-click', this._changeSelectedUser);
+
                 super.ready();
             }
 
@@ -118,6 +128,7 @@
 
             _changeSelectedUser(e) {
                 this.currentUser = e.detail.userName
+                this.$.drawer.toggle()
             }
 
             _toggleDrawer() {
