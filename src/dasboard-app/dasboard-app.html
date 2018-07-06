@@ -3,12 +3,19 @@
 <link rel="import" href="../post-form/post-form.html">
 <link rel="import" href="../post-list/post-list.html">
 
+<link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
+
+
 <dom-module id="dashboard-app">
     <template>
         <style>
             .container {
                 display: flex;
                 outline: 3px solid red;
+                flex-direction: column;
+                align-items: center;
             }
 
             user-list {
@@ -24,17 +31,68 @@
                     flex-direction: column;
                 }
             }
+
+
+            app-toolbar {
+                background-color: #4285f4;
+                color: #fff;
+            }
+
+            paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            paper-icon-button+[main-title] {
+                margin-left: 24px;
+            }
+
+            paper-progress {
+                display: block;
+                width: 100%;
+                --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+                --paper-progress-container-color: transparent;
+            }
+
+            app-header {
+                @apply --layout-fixed-top;
+                color: #fff;
+                --app-header-background-rear-layer: {
+                    background-color: #ef6c00;
+                }
+                ;
+            }
+
+            app-drawer {
+                --app-drawer-scrim-background: rgba(0, 0, 100, 0.8);
+                --app-drawer-content-container: {
+                    background-color: #B0BEC5;
+                    width: 40%;
+                    overflow: scroll;
+                }
+                z-index:+10;
+            }
+
+            sample-content {
+                padding-top: 64px;
+            }
         </style>
+
+        <app-header reveals>
+            <app-toolbar>
+                <paper-button icon="menu" on-click="_toggleDrawer">Users</paper-button>
+                <div main-title>My app</div>
+            </app-toolbar>
+        </app-header>
+        <app-drawer id="drawer" swipe-open>
+            <user-list users="[[usersWithoutMe]]"></user-list>
+        </app-drawer>
+
 
         <h1>[[currentUser]]</h1>
         <h1>quien se loggeo? [[loggedinUser.email]]</h1>
         <div class="container">
-            <user-list users="[[usersWithoutMe]]"></user-list>
-
-            <div class="cont">
-                <post-form></post-form>
-                <post-list post-arr="[[currentPosts]]"></post-list>
-            </div>
+            <post-form></post-form>
+            <post-list post-arr="[[currentPosts]]"></post-list>
         </div>
 
     </template>
@@ -66,6 +124,8 @@
                 super.ready();
             }
 
+
+
             _filterUsers(response) {
                 let arr = [];
                 if (response) {
@@ -88,6 +148,10 @@
 
             _changeSelectedUser(e) {
                 this.currentUser = e.detail.userName
+            }
+
+            _toggleDrawer() {
+                this.$.drawer.toggle()
             }
 
             _getCurrentPosts(currentUser) {
