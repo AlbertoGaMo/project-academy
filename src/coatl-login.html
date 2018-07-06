@@ -35,11 +35,13 @@
                     margin: auto;
                     padding: 30px;
                     border: 1px solid rgba(0, 0, 0, 0.2);
-                };
+                }
+                ;
                 --paper-card-header: {
                     padding: 20px;
                     margin: 10px 110px;
-                };
+                }
+                ;
                 --paper-card-actions: {
                     border: none;
                     display: -ms-flexbox;
@@ -64,26 +66,30 @@
                 /* Reset some defaults */
                 --paper-input-container: {
                     padding: 0;
-                };
+                }
+                ;
                 --paper-input-container-underline: {
                     display: none;
                     height: 0;
-                };
+                }
+                ;
                 /*--paper-input-container-underline-focus: { display: none; };*/
-
                 /* New custom styles */
                 --paper-input-container-input: {
                     box-sizing: border-box;
                     font-size: inherit;
                     padding: 4px;
                     background: none;
-                };
+                }
+                ;
                 --paper-input-container-input-focus: {
                     /*background: var(--primary-background-color);*/
-                };
+                }
+                ;
                 --paper-input-container-input-invalid: {
                     /*background: rgba(255, 0, 0, 0.3);*/
-                };
+                }
+                ;
                 --paper-input-container-label: {
                     top: -10px;
                     left: 5px;
@@ -92,10 +98,12 @@
                     font-weight: bold;
                     font-size: 18pt;
                     color: var(--primary-text-color);
-                };
+                }
+                ;
                 --paper-input-container-label-floating: {
                     width: auto;
-                };
+                }
+                ;
 
                 --layout-horizontal: {
                     background: white;
@@ -118,16 +126,17 @@
                 --paper-button-raised-keyboard-focus: {
                     color: white !important;
                     font-weight: 500 !important;
-                };
+                }
+                ;
             }
 
-            .paper__toast{
+            .paper__toast {
                 /* Fixed align to center*/
                 margin-left: calc(50vw - 150px);
                 --paper-toast-background-color: red;
                 --paper-toast-color: white;
                 /*Mixin applied to the paper-toast*/
-                --paper-font-common-base:{
+                --paper-font-common-base: {
                     text-align: center;
                 }
             }
@@ -137,18 +146,16 @@
 
             <div class="card-content">
 
-                <paper-input id="userMail" class="paper__input" value="{{mail::input}}" label="Usuario"
-                             placeholder="ejemplo@email.com" required error-message="Campo email no debe ir vacio.">
+                <paper-input id="userMail" class="paper__input" value="{{mail::input}}" label="Usuario" placeholder="ejemplo@email.com" required
+                    error-message="Campo email no debe ir vacio.">
 
                     <iron-icon icon="mail" slot="prefix"></iron-icon>
-                    <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear"
-                                       title="clear"></paper-icon-button>
+                    <paper-icon-button slot="suffix" on-click="_clearInput" icon="clear" alt="clear" title="clear"></paper-icon-button>
 
                 </paper-input>
 
-                <paper-input id="userPwd" class="paper__input" type="password" value="{{pwd::input}}" always-float-label
-                             label="Contraseña" required
-                             error-message="Campo contraseña no debe ir vacio."></paper-input>
+                <paper-input id="userPwd" class="paper__input" type="password" value="{{pwd::input}}" always-float-label label="Contraseña"
+                    required error-message="Campo contraseña no debe ir vacio."></paper-input>
 
             </div>
 
@@ -205,9 +212,9 @@
                             pwd: ''
                         }
                     },
-                    data:{
+                    data: {
                         type: Array,
-                        value:[]
+                        value: []
                     }
                 };
             }
@@ -253,7 +260,8 @@
              * @private
              */
             _checkMail(e) {
-                let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                let re =
+                    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(e);
             }
 
@@ -291,11 +299,13 @@
                     return;
                 }
                 if (!this._checkMail(this.mail)) {
-                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message', 'Formato de correo no válido.');
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message',
+                        'Formato de correo no válido.');
                     this.shadowRoot.querySelector('#userMail').invalid = true;
                     return;
                 } else {
-                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message', 'Campo email no debe ir vacio.');
+                    this.shadowRoot.querySelector('#userMail').setAttribute('error-message',
+                        'Campo email no debe ir vacio.');
                     this.shadowRoot.querySelector('#userMail').invalid = false;
                 }
                 this.loading = !this.loading;
@@ -304,23 +314,28 @@
 
             _fetch() {
 
-                console.log('JSON.stringify({email:this.mail,password: this.pwd})',JSON.stringify({email:this.mail,password: this.pwd}));
+                console.log('JSON.stringify({email:this.mail,password: this.pwd})', JSON.stringify({
+                    email: this.mail,
+                    password: this.pwd
+                }));
 
-                fetch('https://posts-services.herokuapp.com/users'/*,{
-                    method: 'post',
-                    body: JSON.stringify({email:this.mail,password: this.pwd})
-                }*/)
+                fetch('https://posts-services.herokuapp.com/users'
+                        /*,{
+                                            method: 'post',
+                                            body: JSON.stringify({email:this.mail,password: this.pwd})
+                                        }*/
+                    )
                     .then((resp) => resp.json()) // Transform the data into json
-                    .then((d)=>  {
+                    .then((d) => {
                         // Create and append the li's to the ul
 
                         let data = this._clean(d);
 
-                        for(let i = 0; i < data.length; ++i){
+                        for (let i = 0; i < data.length; ++i) {
 
                             let email = data[i].email;
                             let pwd = data[i].password;
-                            if(this.mail === email && this.pwd === pwd){
+                            if (this.mail === email && this.pwd === pwd) {
 
                                 this.loading = !this.loading;
                                 this.mail = '';
@@ -328,17 +343,20 @@
                                 this.data = [];
 
 
-                                this.set('data',data);
+                                this.set('data', data);
                                 //aqui hay que redirigir al dashboard
                                 this.dispatchEvent(new CustomEvent('change-page', {
-                                    bubbles: true, composed: true, detail: {
-                                        user:{
+                                    bubbles: true,
+                                    composed: true,
+                                    detail: {
+                                        user: {
                                             email: this.mail,
                                             password: this.pwd,
                                             active: true
                                         },
                                         page: 'dashboard'
-                                    }}));
+                                    }
+                                }));
                                 return;
                             }
 
@@ -353,17 +371,19 @@
 
                     })
                     .catch(e => {
-                        console.log(`Parece que hubo un problema ===>\n Código de estado: ${e.status}\n Mensaje: ${e.statusText}`);
+                        console.log(
+                            `Parece que hubo un problema ===>\n Código de estado: ${e.status}\n Mensaje: ${e.statusText}`
+                        );
                         this.loading = !this.loading;
                         this.mail = '';
                         this.pwd = '';
                     });
 
             }
-            _clean(data){
-                for ( let i = 0, j = data.length ; i < j; i++ ) {
-                    if ( data[i] === null ) {
-                        data.splice( i, 1 );
+            _clean(data) {
+                for (let i = 0, j = data.length; i < j; i++) {
+                    if (data[i] === null) {
+                        data.splice(i, 1);
                         i--;
                     }
                 }

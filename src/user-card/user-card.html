@@ -5,14 +5,30 @@
 <dom-module id="user-card">
     <template>
         <style>
+            :host {
+                order: 2;
+            }
+
+            :host(.mainusr) {
+                order: 1;
+            }
+
+            paper-card {
+                border-left: 10px solid blue;
+                padding: 1rem;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .main {
+                border-left: 10px solid rgb(83, 83, 197);
+            }
         </style>
 
-        <div on-click="_handleClick">
-            <paper-card>
-                <h1>[[user.name]]</h1>
-                <paper-ripple></paper-ripple>
-            </paper-card>
-        </div>
+        <paper-card class$="[[main]]" on-click="_handleClick">
+            <h1>[[user.name]]</h1>
+            <paper-ripple></paper-ripple>
+        </paper-card>
 
     </template>
     <script>
@@ -24,7 +40,10 @@
 
                 static get properties() {
                     return {
-                        user: Object
+                        user: Object,
+                        main: {
+                            computed: '_isMainUser(user)'
+                        }
                     }
                 }
 
@@ -36,6 +55,13 @@
                             userName: this.user.name
                         }
                     }));
+                }
+
+                _isMainUser(user) {
+                    if (user.isMainUser) {
+                        return 'main'
+                    }
+                    return 'regular'
                 }
 
             }

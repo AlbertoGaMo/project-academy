@@ -7,10 +7,6 @@
 <dom-module id="coatl-app">
     <template>
         <style>
-            :host {
-
-            }
-
             coatl-login[unresolved] {
                 pointer-events: none;
                 opacity: 0;
@@ -22,15 +18,10 @@
         </style>
 
         <app-location route="{{route}}"></app-location>
-        <app-route
-                route="{{route}}"
-                pattern="/:page"
-                data="{{routeData}}"
-                tail="{{subroute}}"
-        ></app-route>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-
-        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404" style="display: inherit;">
+        <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" fallback-selection="404"
+            style="display: inherit;">
             <!-- login view -->
             <coatl-login name="login"></coatl-login>
             <!-- dashboard view  -->
@@ -48,7 +39,10 @@
          * @polymer
          */
         class CoatlApp extends Polymer.Element {
-            static get is() { return 'coatl-app'; }
+
+            static get is() {
+                return 'coatl-app';
+            }
             static get properties() {
                 return {
                     page: {
@@ -58,23 +52,25 @@
                     },
                     routeData: Object,
                     subroute: Object,
-                    user:Object
+                    user: Object
                 };
             }
-            static get observers() { return [
-                '_routePageChanged(routeData.page)'
-            ]}
-            ready(){
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)'
+                ]
+            }
+            ready() {
                 super.ready();
-                this.addEventListener('change-page', (e)=> this._onChangePage(e));
+                this.addEventListener('change-page', (e) => this._onChangePage(e));
             }
             _routePageChanged(page) {
-                console.log("_routePageChanged",page);
+                console.log("_routePageChanged", page);
                 this.page = page || 'login';
             }
             _pageChanged(page, oldPage) {
 
-                console.log("_pageChanged",page,oldPage);
+                console.log("_pageChanged", page, oldPage);
 
                 if (page != null) {
                     // home route is eagerly loaded
@@ -87,7 +83,7 @@
                         //Polymer.importHref(href, onload, onerror, optAsync){}
                         Polymer.importHref(
                             this.resolveUrl('coatl-' + page + '.html'),
-                            cb,cb, true);
+                            cb, cb, true);
                     }
                 }
             }
@@ -101,11 +97,11 @@
                     });
                 }
             }
-            _onChangePage(e){
+            _onChangePage(e) {
                 let detail = event.detail;
-                this.set('user',detail.user);
-                this.set('routeData',{
-                    page : detail.page
+                this.set('user', detail.user);
+                this.set('routeData', {
+                    page: detail.page
                 });
             }
 
