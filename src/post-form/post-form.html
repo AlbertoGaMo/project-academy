@@ -42,6 +42,16 @@
             paper-button {
                 margin-top: 16px;
             }
+            .paper__toast {
+                /* Fixed align to center*/
+                margin-left: calc(50vw - 150px);
+                --paper-toast-background-color: red;
+                --paper-toast-color: white;
+                /*Mixin applied to the paper-toast*/
+                --paper-font-common-base: {
+                    text-align: center;
+                }
+            }
         </style>
 
         <iron-meta id="meta"></iron-meta>
@@ -61,6 +71,7 @@
             </form>
         </iron-form>
 
+        <paper-toast id="toast" class="paper__toast" text="Post creado correctamente." horizontalAlign="auto"></paper-toast>
 
 
 
@@ -92,12 +103,22 @@
                     console.log("Crear post");
 
                     let dataUser = this.$.meta.byKey('userInfo');
-                    let title = this.titleInputVal;
+                    let jsonString = JSON.stringify({user:{email:dataUser.email},post:{title:this.titleInputVal,body:this.textAreaValue}});
 
-                    fetch('https://posts-services.herokuapp.com/posts'
-                        ,{
-                        method: 'post',
-                        body: JSON.stringify({user:{email:dataUser.email},post:{title:this.titleInputVal,body:this.textAreaValue}})
+
+                    console.log("dataUser",dataUser);
+                    console.log("title",this.titleInputVal);
+                    console.log("body",this.textAreaValue);
+                    console.log("jsonString",jsonString);
+
+                    fetch('https://posts-services.herokuapp.com/posts',
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: jsonString
                         }
                     )
                         .then((resp) => resp.json()) // Transform the data into json
@@ -105,10 +126,14 @@
 
                             console.log("data post",d);
 
+                            this.$.iron.reset();
+
+                            this.$.toast.open();
+
                             /*this.loading = !this.loading;
                             this.mail = '';
                             this.pwd = '';
-                            this.$.toast.open();
+
                             */
 
 
@@ -122,7 +147,7 @@
 
 
 
-                    //this.$.iron.submit();
+                    //
 
 
 
