@@ -11,24 +11,15 @@
 <dom-module id="dashboard-app">
     <template>
         <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
             app-toolbar {
                 background-color: #4285f4;
                 color: #fff;
-            }
-
-            paper-icon-button {
-                --paper-icon-button-ink-color: white;
-            }
-
-            paper-icon-button+[main-title] {
-                margin-left: 24px;
-            }
-
-            paper-progress {
-                display: block;
-                width: 100%;
-                --paper-progress-active-color: rgba(255, 255, 255, 0.5);
-                --paper-progress-container-color: transparent;
             }
 
             app-header {
@@ -58,7 +49,7 @@
         <app-header reveals>
             <app-toolbar>
                 <paper-button icon="menu" on-click="_toggleDrawer">Users</paper-button>
-                <div main-title>My app</div>
+                <div main-title>Queta Blog</div>
             </app-toolbar>
         </app-header>
         <app-drawer id="drawer" swipe-open>
