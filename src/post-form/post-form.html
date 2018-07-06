@@ -46,7 +46,7 @@
             .paper__toast {
                 /* Fixed align to center*/
                 margin-left: calc(50vw - 150px);
-                --paper-toast-background-color: red;
+                --paper-toast-background-color: green;
                 --paper-toast-color: white;
                 /*Mixin applied to the paper-toast*/
                 --paper-font-common-base: {
@@ -96,6 +96,10 @@
                         },
                         rows: {
                             value: 2
+                        },
+                        currentPosts:{
+                            type: Object,
+                            reflectToAttribute: true
                         }
                     }
                 }
@@ -137,11 +141,22 @@
 
                             this.$.toast.open();
 
-                            /*this.loading = !this.loading;
-                            this.mail = '';
-                            this.pwd = '';
+                            console.log('pather',this.pather);
 
-                            */
+                            let posts;
+                            d.forEach(user => {
+                                if (user.email == dataUser.email) {
+                                    posts = user.posts;
+                                }
+                            });
+
+                            console.log("como va 1",this.pather.currentPosts);
+
+                            let lastPost = posts[posts.length -1 ];
+
+                            this.pather.push('currentPosts',lastPost);
+
+                            console.log("como va 2",this.pather.currentPosts);
 
 
 

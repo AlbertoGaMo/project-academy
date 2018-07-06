@@ -69,7 +69,7 @@
         </app-drawer>
 
         <div class="container">
-            <post-form></post-form>
+            <post-form pather="[[pather]]"></post-form>
             <post-list post-arr="[[currentPosts]]"></post-list>
         </div>
 
@@ -91,16 +91,18 @@
                     usersArr: Array,
                     currentUser: String,
                     currentPosts: {
+                        notify: true,
                         computed: '_getCurrentPosts(currentUser)'
                     },
-                    loggedinUser: String
+                    loggedinUser: String,
+                    pather:Object
                 }
             }
 
             ready() {
-                this.addEventListener('user-card-click', this._changeSelectedUser);
-
                 super.ready();
+                this.addEventListener('user-card-click', this._changeSelectedUser);
+                this.set('pather',this);
             }
 
 
@@ -125,7 +127,7 @@
             }
 
             _changeSelectedUser(e) {
-                this.currentUser = e.detail.userName
+                this.currentUser = e.detail.userName;
                 this.$.drawer.toggle()
             }
 
