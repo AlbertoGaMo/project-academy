@@ -11,28 +11,6 @@
 <dom-module id="dashboard-app">
     <template>
         <style>
-            .container {
-                display: flex;
-                outline: 3px solid red;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            user-list {
-                flex-grow: 1;
-            }
-
-            .cont {
-                flex-grow: 4;
-            }
-
-            @media (max-width: 425px) {
-                .container {
-                    flex-direction: column;
-                }
-            }
-
-
             app-toolbar {
                 background-color: #4285f4;
                 color: #fff;
@@ -84,7 +62,7 @@
             </app-toolbar>
         </app-header>
         <app-drawer id="drawer" swipe-open>
-            <user-list users="[[usersWithoutMe]]"></user-list>
+            <user-list users="[[usersArr]]"></user-list>
         </app-drawer>
 
 
@@ -110,7 +88,7 @@
                     usersList: {
                         computed: '_filterUsers(response)'
                     },
-                    usersWithoutMe: Array,
+                    usersArr: Array,
                     currentUser: String,
                     currentPosts: {
                         computed: '_getCurrentPosts(currentUser)'
@@ -141,7 +119,7 @@
                     console.log(response, '***')
 
                 }
-                this.usersWithoutMe = arr;
+                this.usersArr = arr;
                 this.currentUser = this.loggedinUser.name;
                 console.log(arr)
             }
@@ -156,7 +134,7 @@
 
             _getCurrentPosts(currentUser) {
                 let posts;
-                this.usersWithoutMe.forEach(user => {
+                this.usersArr.forEach(user => {
                     if (user.name == this.currentUser) {
                         posts = user.posts
                     }
