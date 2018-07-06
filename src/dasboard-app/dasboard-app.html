@@ -6,6 +6,7 @@
 <link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="/src/dropdown-menu/dropdown-menu.html">
 
 
 <dom-module id="dashboard-app">
@@ -50,6 +51,7 @@
             <app-toolbar>
                 <paper-button icon="menu" on-click="_toggleDrawer">Users</paper-button>
                 <div main-title>Queta Blog</div>
+                <dropdown-menu></dropdown-menu>
             </app-toolbar>
         </app-header>
         <app-drawer id="drawer" swipe-open>

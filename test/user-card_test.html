@@ -1,34 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>user-card test</title>
+
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="/bower_components/web-component-tester/browser.js"></script>
+
     <link rel="import" href="/src/user-card/user-card.html">
 </head>
 
 <body>
 
-
-    <test-fixture id="kard">
+    <test-fixture id="BasicTestFixture">
         <template>
-            <user-card kard="test value"></user-card>
+            <user-card></user-card>
         </template>
     </test-fixture>
 
     <script>
-        suite('Dispatch event', function () {
-            test('Element detail loades equals true ', function (done) {
-                const myElement = fixture('kard');
-                assert.equal(myElement.kard, 'test value');
-            })
-        })
+        suite('app-shell', function () {
+
+            test('instantiating the element with default properties works', function () {
+                let dummyUser = {
+                    name: "Devyn Kunde",
+                    email: "Aniya7@yahoo.com",
+                    password: "90wfZ7FeqrSsyw2",
+                    address: "6359 Bonita Radial",
+                    phone: "1-829-815-9669",
+                    posts: [{
+                            "title": "At enim nisi pariatur quae illo dolor similique reprehenderit.",
+                            "body": "Ipsum repudiandae ut. Quaerat enim et. Dolores eligendi voluptatum ratione veritatis non quia saepe magni.",
+                            "date": "2018-07-03T22:48:45.553Z"
+                        },
+                        {
+                            "title": "Recusandae ea voluptatem velit autem illum ut quis.",
+                            "body": "Ab est autem. Nihil dolorem ab. Sint non necessitatibus fuga modi et. Quam vero a ipsa recusandae ducimus adipisci culpa nostrum et.",
+                            "date": "2018-07-03T22:48:45.553Z"
+                        }
+                    ]
+
+                }
+                var element = fixture('BasicTestFixture');
+                element.setAttribute('user', dummyUser);
+                Object.keys(element.user).forEach(function (key) {
+
+                    console.log(key, element.user[key]);
+
+                });
+                console.log((element.user))
+                // assert.equal(element.user, 'Devyn Kunde');
+            });
+
+
+        });
     </script>
+
 
 </body>
 
