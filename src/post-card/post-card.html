@@ -128,9 +128,7 @@
                 </div>
                 <div class="post-right_footer">
                     <div class="post-right_footer_date">
-                        <p>Sat 06 aug 2016 -
-                            <span>22h14
-                                <span>
+                        <p> [[_formatDate(post.date)]]
                         </p>
                     </div>
                     <div class="post-right_footer_pictos">
@@ -153,6 +151,16 @@
                     return {
                         post: Object
                     }
+                }
+
+                _formatDate(date) {
+                    var year = date.substring(0, 4);
+                    let month = date.substring(5, 7);
+                    let day = date.substring(8, 10);
+
+                    let full = `${day}/${month}/${year}`
+
+                    return full
                 }
 
             }
