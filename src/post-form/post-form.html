@@ -42,6 +42,7 @@
             paper-button {
                 margin-top: 16px;
             }
+
             .paper__toast {
                 /* Fixed align to center*/
                 margin-left: calc(50vw - 150px);
@@ -60,11 +61,11 @@
             <form>
                 <div class="pyramid-card">
                     <img id="pyramid-icon" src="../../images/piramide-maya.svg" alt="pyramid">
-                    <paper-input value={{titleInputVal::input}} invalid="{{ivalidTitle}}" pattern=".{1,10}" required auto-validate error-message="This field must be between 1 and 140 characters long"
-                                 label="Title"></paper-input>
+                    <paper-input value={{titleInputVal::input}} invalid="{{ivalidTitle}}" pattern=".{1,140}" required auto-validate error-message="This field must be between 1 and 140 characters long"
+                        label="Title"></paper-input>
 
-                    <paper-textarea rows$="[[rows]]" value={{textAreaValue::input}} invalid="{{invalidPost}}" maxlength="13" required auto-validate
-                                    error-message="This field must be between 1 and 140 characters long" label="Post"></paper-textarea>
+                    <paper-textarea rows$="[[rows]]" value={{textAreaValue::input}} invalid="{{invalidPost}}" maxlength="240" required auto-validate
+                        error-message="This field must be between 1 and 240 characters long" label="Post"></paper-textarea>
 
                     <paper-button disabled="[[disableBtn]]" raised on-click="submitForm">Submit</paper-button>
                 </div>
@@ -103,28 +104,34 @@
                     console.log("Crear post");
 
                     let dataUser = this.$.meta.byKey('userInfo');
-                    let jsonString = JSON.stringify({user:{email:dataUser.email},post:{title:this.titleInputVal,body:this.textAreaValue}});
+                    let jsonString = JSON.stringify({
+                        user: {
+                            email: dataUser.email
+                        },
+                        post: {
+                            title: this.titleInputVal,
+                            body: this.textAreaValue
+                        }
+                    });
 
 
-                    console.log("dataUser",dataUser);
-                    console.log("title",this.titleInputVal);
-                    console.log("body",this.textAreaValue);
-                    console.log("jsonString",jsonString);
+                    console.log("dataUser", dataUser);
+                    console.log("title", this.titleInputVal);
+                    console.log("body", this.textAreaValue);
+                    console.log("jsonString", jsonString);
 
-                    fetch('https://posts-services.herokuapp.com/posts',
-                        {
+                    fetch('https://posts-services.herokuapp.com/posts', {
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json'
                             },
                             body: jsonString
-                        }
-                    )
+                        })
                         .then((resp) => resp.json()) // Transform the data into json
                         .then((d) => {
 
-                            console.log("data post",d);
+                            console.log("data post", d);
 
                             this.$.iron.reset();
 
